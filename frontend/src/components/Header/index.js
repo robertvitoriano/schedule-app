@@ -1,5 +1,17 @@
 import React from "react";
+import './index.css'
+const Header = ({history}) => {
+  return <div className="header">
+      <div className="navigation">
+          <ul>
+              <li>Home</li>
+              <li>Tarefas</li>
+              <li>Logout</li>
 
-const Header = () => {
-  return <div className="header"></div>;
+          </ul>
+
+      </div>
+  </div>;
 };
+
+export default Header;
