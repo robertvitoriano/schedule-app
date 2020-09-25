@@ -10,9 +10,24 @@ import './index.css'
  const Home = ({history})=>{
     console.log('Home');
 
-    return(<div className="login-container container">
+    return(<div className="home-container container">
         <Header history={history}></Header>
- 
+        <div className="home-content">
+        <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            }}
+            initialView='dayGridMonth'
+            editable={true}
+            selectable={true}
+            selectMirror={true}
+            dayMaxEvents={true}
+
+          />
+ </div>
     </div>)
 }
 export default Home;
