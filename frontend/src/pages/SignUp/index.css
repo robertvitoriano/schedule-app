@@ -1,17 +1,17 @@
-.register-container{
+.signup-container{
     display: flex;
     align-items:center ;
     justify-content: center;
     
 }
-.register-content{
+.signup-content{
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
 }
 
-.register-logo{
+.signup-logo{
     width:250px;
     margin-bottom: 100px;
 }
@@ -21,7 +21,7 @@ form{
     flex-direction: column;
     align-items: center;
 }
-.register-field{
+.signup-field{
     display: block;
     text-align: center;
     width: 500px;
@@ -37,7 +37,7 @@ form{
 
 }
 
-.register-button{
+.signup-button{
     width:180px;
     height:65px;
     margin-top: 40px;

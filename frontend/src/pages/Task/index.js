@@ -1,13 +1,15 @@
 import React from 'react';
+import Header from './../../components/Header'
+import logo from './../../assets/logo-agx-software.png';
 
-const  Task  =()=>{
+import './index.css'
+ const Tasks = ({history})=>{
+    console.log('Home');
 
-
-    return(<div>
-        <h1>Hello World</h1>
+    return(<div className="login-container container">
+        <Header history={history}></Header>
+        <h1>Tasks</h1>
+ 
     </div>)
 }
-
-
-
-export default Task;
+export default Tasks;

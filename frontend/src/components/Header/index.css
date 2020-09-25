@@ -5,13 +5,15 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    position: relative;
+    position: absolute;
+    top:0;
 }
 
 .header-logo{
     width: 60px;
     position: absolute;
     left: 20px;
+    cursor: pointer;
 }
 
 .navigation-items{
