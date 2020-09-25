@@ -6,8 +6,6 @@ import './index.css'
  const Home = ({history})=>{
     console.log('Home');
 
-
-
     return(<div className="login-container container">
         <Header history={history}></Header>
  

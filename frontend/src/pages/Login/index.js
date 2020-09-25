@@ -9,7 +9,16 @@ import './index.css'
 
 
     return(<div className="login-container container">
-        <img className="login-logo" src={logo}></img>
+           <div className="login-content">
+               <img src={logo} className="login-logo"></img>
+               <form>
+                   <input placeholder="Digite seu e-mail" className="login-field"></input>
+                   <input placeholder="Digite sua senha"className="login-field"></input>
+                  <button className="login-button">Login</button>
+               </form>
+               <button className="login-button">Registrar</button>
+
+           </div>
     </div>)
 }
 export default Login;
