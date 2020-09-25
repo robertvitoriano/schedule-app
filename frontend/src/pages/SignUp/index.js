@@ -12,9 +12,10 @@ import './index.css'
            <div className="signup-content">
                <img src={logo} className="signup-logo"></img>
                <form>
-                   <input placeholder="Digite seu e-mail" className="signup-field"></input>
-                   <input placeholder="Digite sua senha"className="signup-field"></input>
-                   <button className="signup-button" onClick={e=>history.push('/home')}>Registrar</button>
+               <input placeholder="Digite seu nome"className="signup-field"></input>
+                <input placeholder="Digite seu e-mail" className="signup-field"></input>
+                <input placeholder="Digite sua senha"className="signup-field"></input>
+                <button className="signup-button" onClick={e=>history.push('/home')}>Registrar</button>
                </form>
 
            </div>

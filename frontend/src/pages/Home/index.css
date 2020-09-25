@@ -5,8 +5,22 @@
 }
 
 .home-content{
+    margin-top:50px;
     background-color: aliceblue;
-    padding:30px;
+    padding:40px;
     border-radius: 15px;
     box-shadow:  2px 2px 2px;
+    height:700px;
+    width:800px; 
+    
+}
+
+.translucent{
+    width: 100vw;
+    height:100vh;
+    background-color: white;
+    position: absolute;
+    opacity: 60%;
+    z-index: 5;
+
 }
