@@ -13,3 +13,6 @@ const User = new Scheama({
     }
 })
 
+const User = mongoose.model('user',UserSchema);
+
+module.exports = User;
