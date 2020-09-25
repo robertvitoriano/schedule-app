@@ -1,13 +1,16 @@
 import React from 'react';
 import Header from './../../components/Header'
+import logo from './../../assets/logo-agx-software.png';
 
-const Home = ({history})=>{
+import './index.css'
+ const Home = ({history})=>{
+    console.log('Home');
 
-   
-    return(<div className="home-container container">
+
+
+    return(<div className="login-container container">
         <Header history={history}></Header>
-        <h1>Home</h1>
+ 
     </div>)
 }
-
 export default Home;

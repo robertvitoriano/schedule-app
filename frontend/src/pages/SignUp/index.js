@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './../../components/Header'
 
 const SignUp = ({history})=>{
+    console.log('Sign Up');
 
    
     return(<div className="sign-up-container container">
