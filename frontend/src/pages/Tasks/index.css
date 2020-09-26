@@ -163,9 +163,10 @@ height:200px;
     cursor: pointer;
     font-size: 30px;
  }
-.task-buttons{
+.task-field-buttons{
   display: flex;
   align-items: center;
+  
   
 }
 .task-field-title{
