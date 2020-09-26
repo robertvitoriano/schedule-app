@@ -17,16 +17,18 @@ useEffect(()=>{
 const handleTaskDelete  = (e,id)=>{
     e.preventDefault();
 
-
-   const  remainingTasks = tasks.filter((task)=>{
-       return task._i !== id
-   })
-   setTasks(remainingTasks);
-    
    fetch('http://localhost:4000/tasks', {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id })
+}).then(response=>{
+    if(response.status ===200){
+        const  remainingTasks = tasks.filter((task)=>{
+            return task._i !== id
+        })
+        setTasks(remainingTasks);
+    }
+
 })
 
 
