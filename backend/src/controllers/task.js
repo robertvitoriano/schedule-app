@@ -12,6 +12,5 @@ module.exports = {
         console.log(task);
         task.save();
         return res.send(task);
-
     }
 }
