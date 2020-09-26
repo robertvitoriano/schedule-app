@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import api from './../../services/api'
 import FullCalendar, { formatDate } from "@fullcalendar/react";
+import ptBrLocale from '@fullcalendar/core/locales/pt-br';
+
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import Header from "./../../components/Header";
 import logo from "./../../assets/logo-agx-software.png";
+
 
 
 import "./index.css";
@@ -109,6 +112,7 @@ useEffect(()=>{
             selectMirror={true}
             dayMaxEvents={true}
             events={currentTasks} // alternatively, use the `events` setting to fetch from a feed
+            locale={ptBrLocale}
             select={handleDateSelect}
             // eventClick={handleEventClick}
             // eventsSet={handleEvents} // called after events are initialized/added/changed/removed
