@@ -3,7 +3,7 @@ import React from "react";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
-import Tasks from './pages/Task';
+import Tasks from './pages/Tasks';
 
 export default function Routes() {
   return (
