@@ -38,24 +38,13 @@ useEffect(()=>{
 
   const handleDateSelect = async (selectInfo) => {
     console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
-    let title = prompt('Please enter a new title for your event')
+    let title = prompt('Digite o título da nova tarefa')
     let calendarApi = selectInfo.view.calendar
 
-    await api.post('/tasks',{
-      title:title,
-      start:selectInfo.startStr,
-      end:selectInfo.endStr,
-      allDay:selectInfo.allDay
-    })
+
 
     calendarApi.unselect() // clear date selection
-     function checkFlag() {
-    if(title == false) {
-       window.setTimeout(checkFlag, 100); /* this checks the flag every 100 milliseconds*/
-    } else {
-      /* do something*/
-    }
-}
+
     if (title) {
       calendarApi.addEvent({
         title,
@@ -63,7 +52,14 @@ useEffect(()=>{
         end: selectInfo.endStr,
         allDay: selectInfo.allDay
       })
+      await api.post('/tasks',{
+        title:title,
+        start:selectInfo.startStr,
+        end:selectInfo.endStr,
+        allDay:selectInfo.allDay
+      })
     }
+
   }
 
   
