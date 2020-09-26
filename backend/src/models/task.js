@@ -6,7 +6,7 @@ const TaskSchema = new Schema({
     title:{
         type:String
     },
-    Date:{
+    date:{
         type:String
     }
 })
