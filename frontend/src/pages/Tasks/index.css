@@ -22,6 +22,9 @@
   border-radius:10px;
 }
 
+.tasks-title{
+    margin-bottom: 10px;
+}
 
 
 .tasks-scroll-list ul{

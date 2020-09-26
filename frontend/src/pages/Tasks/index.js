@@ -18,6 +18,7 @@ useEffect(()=>{
 
     return(<div className="container tasks-container">
              <Header/>
+             <h1 className="tasks-title">Tarefas Agendadas</h1>
              <div className="tasks-content">
              <div className="tasks-scroll-list">
              <ul className="tasks-list">
