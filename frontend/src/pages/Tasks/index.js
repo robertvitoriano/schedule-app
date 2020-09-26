@@ -6,6 +6,10 @@ import "./index.css";
 const Tasks = ({ history }) => {
   const [tasks, setTasks] = useState([]);
   const [showUpdateModal,setShowUpdateModal] = useState(false);
+  const [taskTitle,setTaskTitle] = useState('');
+  const [taskStart,setTaskStart] = useState('');
+  const [taskEnd,setTaskEnd] = useState('');
+
   useEffect(() => {
     const lodTasks = async () => {
       const response = await api.get("/tasks");
@@ -94,10 +98,19 @@ const Tasks = ({ history }) => {
             >
               X
             </a>
-            <span>Adicione uma nova tarefa abaixo</span>
+            <span>Alterar Tarefa</span>
             <input
+              onChange={(e) => setTaskTitle(e.target.value)}
+              
             />
-            <a className="add-task-button" >Adicionar Tarefa</a>
+                        <input
+              onChange={(e) => setTaskStart(e.target.value)}
+              
+            />
+                        <input
+              onChange={(e) => setTaskEnd(e.target.value)}
+              
+            />
           </div>
         </div>
       ) : (

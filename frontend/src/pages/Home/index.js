@@ -116,8 +116,18 @@ useEffect(()=>{
             >
               X
             </a>
-            <span>Adicione uma nova tarefa abaixo</span>
+            <span>Alterar Tarefa</span>
             <input
+              value={newTaskTitle}
+              onChange={(e) => setNewTaskTitle(e.target.value)}
+              
+            />
+                        <input
+              value={newTaskTitle}
+              onChange={(e) => setNewTaskTitle(e.target.value)}
+              
+            />
+                        <input
               value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
               
