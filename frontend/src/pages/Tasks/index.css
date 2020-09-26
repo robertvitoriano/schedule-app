@@ -93,9 +93,38 @@ height:150px;
 
 }
 
-.task-field{
+.translucent{
+    width: 100vw;
+    height:100vh;
+    background-color: black;
+    position: absolute;
+    opacity: 60%;
+    z-index: 1;
+  
+  }
+  .update-task-modal{
+    background-color: aliceblue;
+    box-shadow:  2px 2px 2px;
+    width: 600px;
+    height:200px;
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
 }
 
+
+  .update-task-modal-content{
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
 .task-field-buttons{
   display: flex;
   align-items: center;

@@ -5,22 +5,23 @@ import "./index.css";
 
 const Tasks = ({ history }) => {
   const [tasks, setTasks] = useState([]);
-  const [showUpdateModal,setShowUpdateModal] = useState(false);
-  const [taskTitle,setTaskTitle] = useState('');
-  const [taskStart,setTaskStart] = useState('');
-  const [taskEnd,setTaskEnd] = useState('');
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskStart, setTaskStart] = useState("");
+  const [taskEnd, setTaskEnd] = useState("");
 
   useEffect(() => {
     const lodTasks = async () => {
       const response = await api.get("/tasks");
       setTasks(response.data);
     };
-    
+
     lodTasks();
   }, [tasks]);
 
   const handleTaskDelete = (e, id) => {
     e.preventDefault();
+  
 
     fetch("http://localhost:4000/tasks", {
       method: "DELETE",
@@ -36,14 +37,17 @@ const Tasks = ({ history }) => {
     });
   };
 
-  const handleTaskUpdate = async (e,id) =>{
-   e.preventDefault();
-   setShowUpdateModal(true);
-   const response = await api.patch('/tasks',{
+  const handleTaskUpdate = async (e, id) => {
+    console.log(id);
+    e.preventDefault();
+    setShowUpdateModal(true);
 
-   })
+    const task = tasks.filter((task)=>task._id === id)[0];
 
-  }
+    setTaskTitle(task.title);
+    setTaskEnd(task.end);
+    setTaskStart(task.start);
+  };
 
   return (
     <div className="container tasks-container">
@@ -57,30 +61,28 @@ const Tasks = ({ history }) => {
               {tasks.map((task) => (
                 <li key={task._id}>
                   <div className="task-field task-field-title">
-                  {task.title}
+                    {task.title}
                   </div>
                   <div className="task-field task-field-start">
-                  {task.start}
+                    {task.start}
                   </div>
-                  <div className="task-field task-field-end">
-                  {task.end}
-                  </div>
+                  <div className="task-field task-field-end">{task.end}</div>
                   <div className="task-field task-field-name">
-                  {task.allDay}
+                    {task.allDay}
                   </div>
                   <div className="task-field-buttons task-field ">
-                  <a
-                    className="update-button task-button"
-                    onClick={(e) => handleTaskUpdate(e, task._id)}
-                  >
-                    Alterar
-                  </a>
-                  <a
-                    className="delete-button task-button"
-                    onClick={(e) => handleTaskDelete(e, task._id)}
-                  >
-                    Excluir
-                  </a>
+                    <a
+                      className="update-button task-button"
+                      onClick={(e) => handleTaskUpdate(e, task._id)}
+                    >
+                      Alterar
+                    </a>
+                    <a
+                      className="delete-button task-button"
+                      onClick={(e) => handleTaskDelete(e, task._id)}
+                    >
+                      Excluir
+                    </a>
                   </div>
                 </li>
               ))}
@@ -88,7 +90,6 @@ const Tasks = ({ history }) => {
           </ul>
         </div>
       </div>
-      <div className="update-task-modal"></div>
       {showUpdateModal ? (
         <div className="task-modal">
           <div className="task-modal-content">
@@ -100,17 +101,18 @@ const Tasks = ({ history }) => {
             </a>
             <span>Alterar Tarefa</span>
             <input
+              value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
-              
             />
-                        <input
+            <input
+              value={taskStart}
               onChange={(e) => setTaskStart(e.target.value)}
-              
             />
-                        <input
+            <input
+              value={taskEnd}
               onChange={(e) => setTaskEnd(e.target.value)}
-              
             />
+            <a className="update-button">Alterar</a>
           </div>
         </div>
       ) : (
