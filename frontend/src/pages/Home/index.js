@@ -66,8 +66,7 @@ useEffect(()=>{
     }
   }
 
- 
-
+  
 
 //  const  handleEvents = (events) => {
 //     setCurrentTasks(events);
@@ -82,8 +81,30 @@ useEffect(()=>{
 //     })
 
 //     }
+const handleEventClick = (clickInfo) => {
+  const chosenTask = currentTasks.filter((task) => {
+    return clickInfo.event.title == task.title;
+  })[0];
 
+  const id = chosenTask._id;
 
+  if (window.confirm(`Você realmente quer remover a tarefa '${clickInfo.event.title}'`)) {
+    clickInfo.event.remove()
+    fetch("http://localhost:4000/tasks", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify({id}),
+    }).then((response)=>{
+      if (response.status === 200) {
+      const remainingTasks = currentTasks.filter((task) => {
+        return task._id !== id;
+      });
+      setCurrentTasks(remainingTasks);
+    }
+    })
+
+  }
+}
 
   return (
     <div className="home-container container">
@@ -104,42 +125,10 @@ useEffect(()=>{
             events={currentTasks} // alternatively, use the `events` setting to fetch from a feed
             locale={ptBrLocale}
             select={handleDateSelect}
+            eventClick={handleEventClick}
           />
 
       </div>
-      {showTaskModal ? (
-        <div className="task-modal">
-          <div className="task-modal-content">
-            <a
-              className="close-button"
-              onClick={(e) => setShowTaskModal(false)}
-            >
-              X
-            </a>
-            <span>Alterar Tarefa</span>
-            <input
-              value={newTaskTitle}
-              onChange={(e) => setNewTaskTitle(e.target.value)}
-              
-            />
-                        <input
-              value={newTaskTitle}
-              onChange={(e) => setNewTaskTitle(e.target.value)}
-              
-            />
-                        <input
-              value={newTaskTitle}
-              onChange={(e) => setNewTaskTitle(e.target.value)}
-              
-            />
-            <a className="add-task-button" onClick={e=>setShowTaskModal(false)}>Adicionar Tarefa</a>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-
-      {showTaskModal ? <div className="translucent"></div> : ""}
     </div>
   );
 };

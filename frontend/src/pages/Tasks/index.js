@@ -11,6 +11,10 @@ const Tasks = ({ history }) => {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskStartDay, setTaskStartDay] = useState("");
   const [taskEndDay, setTaskEndDay] = useState("");
+  const [taskStartHour, setTaskStartHour] = useState("");
+  const [taskEndHour, setTaskEndHour] = useState("");
+  const [hasTime, setHasTime] = useState(false);
+
   const [taskToUpdateId, setTaskToUpdateId] = useState("");
 
   useEffect(() => {
@@ -18,13 +22,11 @@ const Tasks = ({ history }) => {
       const response = await api.get("/tasks");
       setTasks(response.data);
     };
-
     lodTasks();
   }, [tasks]);
 
   const handleTaskDelete = (e, id) => {
     e.preventDefault();
-
     fetch("http://localhost:4000/tasks", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -125,20 +127,68 @@ const Tasks = ({ history }) => {
               onChange={(e) => setTaskTitle(e.target.value)}
               placeholder="Tarefa"
             />
-            <input
-              value={taskStartDay}
-              onChange={(e) =>
-                setTaskStartDay(mask(unMask(e.target.value), ["9999-99-99"]))
-              }
-              placeholder="Inicio"
-            />
-            <input
-              value={taskEndDay}
-              onChange={(e) =>
-                setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))
-              }
-              placeholder="Fim"
-            />
+            {!hasTime ? (
+              <div className="fields-without-time">
+                <input
+                  value={taskStartDay.split('T')[0]}
+                  onChange={(e) =>
+                    setTaskStartDay(
+                      mask(unMask(e.target.value), ["9999-99-99"])
+                    )
+                  }
+                  placeholder="Inicio"
+                />
+                <input
+                  value={taskEndDay.split('T')[0]}
+                  onChange={(e) =>
+                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))
+                  }
+                  placeholder="Fim"
+                />
+              </div>
+            ) : (
+              ""
+            )}
+            {hasTime ? (
+              <div className="fields-without-time">
+                <input
+                  value={taskStartDay}
+                  onChange={(e) =>
+                    setTaskStartDay(
+                      mask(unMask(e.target.value), ["9999-99-99"])
+                    )
+                  }
+                  placeholder="Inicio"
+                />
+                <input
+                  value={taskStartDay}
+                  onChange={(e) =>
+                    setTaskStartDay(
+                      mask(unMask(e.target.value), ["9999-99-99"])
+                    )
+                  }
+                  placeholder="Inicio"
+                />
+                <input
+                  value={taskStartDay}
+                  onChange={(e) =>
+                    setTaskStartDay(
+                      mask(unMask(e.target.value), ["9999-99-99"])
+                    )
+                  }
+                  placeholder="Inicio"
+                />
+                <input
+                  value={taskEndDay}
+                  onChange={(e) =>
+                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))
+                  }
+                  placeholder="Fim"
+                />
+              </div>
+            ) : (
+              ""
+            )}
             <a
               className=" update-modal-button"
               onClick={(e) => {
