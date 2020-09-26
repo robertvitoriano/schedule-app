@@ -9,6 +9,7 @@ const Tasks = ({ history }) => {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskStart, setTaskStart] = useState("");
   const [taskEnd, setTaskEnd] = useState("");
+  const [taskToUpdateId,setTaskToUpdateId] = useState("");
 
   useEffect(() => {
     const lodTasks = async () => {
@@ -37,17 +38,35 @@ const Tasks = ({ history }) => {
     });
   };
 
-  const handleTaskUpdate = async (e, id) => {
+  const handleUpdateModal = async (e, id) => {
     console.log(id);
     e.preventDefault();
     setShowUpdateModal(true);
-
+    setTaskToUpdateId(id);
     const task = tasks.filter((task)=>task._id === id)[0];
 
     setTaskTitle(task.title);
     setTaskEnd(task.end);
     setTaskStart(task.start);
   };
+  const handleTaskUpdate = async (e,id)=>{
+    e.preventDefault();
+    console.log(id);
+  const requestBody =  {
+      id:id,
+      title:taskTitle,
+      start:taskStart,
+      end:taskEnd
+
+   }
+    fetch("http://localhost:4000/tasks", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify(requestBody),
+    })
+    setShowUpdateModal(false);
+
+  }
 
   return (
     <div className="container tasks-container">
@@ -73,7 +92,7 @@ const Tasks = ({ history }) => {
                   <div className="task-field-buttons task-field ">
                     <a
                       className="update-button task-button"
-                      onClick={(e) => handleTaskUpdate(e, task._id)}
+                      onClick={(e) => handleUpdateModal(e, task._id)}
                     >
                       Alterar
                     </a>
@@ -91,8 +110,8 @@ const Tasks = ({ history }) => {
         </div>
       </div>
       {showUpdateModal ? (
-        <div className="task-modal">
-          <div className="task-modal-content">
+        <div className="update-task-modal">
+          <div className="update-task-modal-content">
             <a
               className="close-button"
               onClick={(e) => setShowUpdateModal(false)}
@@ -103,16 +122,21 @@ const Tasks = ({ history }) => {
             <input
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
+              placeholder="Tarefa"
+
             />
             <input
               value={taskStart}
               onChange={(e) => setTaskStart(e.target.value)}
+              placeholder="Inicio"
+
             />
             <input
               value={taskEnd}
               onChange={(e) => setTaskEnd(e.target.value)}
+              placeholder="Fim"
             />
-            <a className="update-button">Alterar</a>
+            <a className="update-button" onClick={e=>{handleTaskUpdate(e,taskToUpdateId)}}>Alterar</a>
           </div>
         </div>
       ) : (
