@@ -19,9 +19,7 @@ const Home = ({ history }) => {
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [currentTasks, setCurrentTasks] = useState([]);
-  const tasksRef = useRef(null);
-  let eventId = 0;
-;
+  const infoRef = useRef(null);
 
 
 useEffect(()=>{
@@ -38,8 +36,6 @@ useEffect(()=>{
   const loadTasks = async()=>{
    const  response = await api.get('/tasks');
    setCurrentTasks(response.data);
-
-
   }
   loadTasks()
 
