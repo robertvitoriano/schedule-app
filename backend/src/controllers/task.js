@@ -3,22 +3,22 @@ const Task = require('../models/Task');
 module.exports = {
     async list(req,res){
         const tasks = await Task.find();
-        console.log(tasks);
         return res.send(tasks);
 
     },
     async create(req,res){
         const task = await Task.create(req.body);
-        console.log(task);
         task.save();
         return res.send(task);
     },
     async delete(req,res){
-        const {id} = req.body;
-        if(id){
+         console.log(req.body);
+        console.log(req.body.id);
+        if(req.body.id){
             try{
-                await Task.findByIdAndDelete(id)
-                return res.send({msg:'Successfully deleted'})
+                await Task.findByIdAndDelete(req.body.id)
+                const tasks = await Task.find();
+                return res.send(tasks   )
     
             }catch(e){
                 console.log(e)
