@@ -58,6 +58,7 @@ useEffect(()=>{
         end:selectInfo.endStr,
         allDay:selectInfo.allDay
       })
+      document.location.reload();
     }
 
   }
@@ -81,7 +82,7 @@ const handleEventClick = (clickInfo) => {
   const chosenTask = currentTasks.filter((task) => {
     return clickInfo.event.title == task.title;
   })[0];
-
+  console.log(chosenTask);
   const id = chosenTask._id;
 
   if (window.confirm(`Você realmente quer remover a tarefa '${clickInfo.event.title}'`)) {
