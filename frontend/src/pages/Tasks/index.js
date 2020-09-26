@@ -129,13 +129,14 @@ const Tasks = ({ history }) => {
             />
             <input
               value={taskStart}
-              onChange={(e) => setTaskStart(e.target.value)}
+              onChange={(e) => setTaskStart(mask(unMask(e.target.value), ["9999-99-99"]))}
               placeholder="Inicio"
+              
 
             />
             <input
               value={taskEnd}
-              onChange={(e) => setTaskEnd(e.target.value)}
+              onChange={(e) => setTaskEnd(mask(unMask(e.target.value), ["9999-99-99"]))}
               placeholder="Fim"
             />
             <a className=" update-modal-button" onClick={e=>{handleTaskUpdate(e,taskToUpdateId)}}>Alterar</a>
