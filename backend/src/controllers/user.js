@@ -1,5 +1,5 @@
-const { create } = require('../models/task');
-const User = require('./../models/user');
+const { create } = require('../models/Task');
+const User = require('../models/User');
 
 module.exports = {
     async create(req,res){

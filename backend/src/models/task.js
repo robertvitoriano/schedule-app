@@ -14,6 +14,10 @@ const TaskSchema = new Schema({
     },
     allDay:{
         type:Boolean,
+    },
+    author:{
+        type: Schema.Types.ObjectId,
+        ref:'User'
     }
 })
 
