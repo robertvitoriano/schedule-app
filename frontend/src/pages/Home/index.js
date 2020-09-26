@@ -40,11 +40,17 @@ useEffect(()=>{
 
 
 
-  const handleDateSelect = (selectInfo) => {
-
+  const handleDateSelect = async (selectInfo) => {
     console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
     let title = prompt('Please enter a new title for your event')
     let calendarApi = selectInfo.view.calendar
+
+    await api.post('/tasks',{
+      title:title,
+      start:selectInfo.startStr,
+      end:selectInfo.endStr,
+      allDay:selectInfo.allDay
+    })
 
     calendarApi.unselect() // clear date selection
      function checkFlag() {

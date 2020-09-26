@@ -6,8 +6,14 @@ const TaskSchema = new Schema({
     title:{
         type:String
     },
-    date:{
+    start:{
         type:String
+    },
+    end:{
+        type:String
+    },
+    allDay:{
+        type:Boolean,
     }
 })
 
