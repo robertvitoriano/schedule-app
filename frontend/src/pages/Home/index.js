@@ -19,31 +19,37 @@ const Home = ({ history }) => {
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [currentTasks, setCurrentTasks] = useState([]);
-  const eventsRef = useRef(null);
+  const tasksRef = useRef(null);
   let eventId = 0;
 ;
 
 
 useEffect(()=>{
-  eventsRef.current= [
-    {
-      title: 'All-day event',
-      start: new Date().toISOString().replace(/T.*$/, '')
-    },
-    {
-      title: 'Timed event',
-      start: new Date().toISOString().replace(/T.*$/, '') + 'T12:00:00'
-    }
-  ]
+  // [
+  //   {
+  //     title: 'All-day event',
+  //     start: new Date().toISOString().replace(/T.*$/, '')
+  //   },
+  //   {
+  //     title: 'Timed event',
+  //     start: new Date().toISOString().replace(/T.*$/, '') + 'T12:00:00'
+  //   }
+  // ]
+  const loadTasks = async()=>{
+  const  response = await api.get('/tasks');
+   tasksRef.current = response.data;
+  }
+  loadTasks();
 
 },[])
 
 
 
   const handleDateSelect = async (selectInfo) => {
+    console.log(tasksRef.current);
     console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
     let title = prompt('Please enter a new title for your event')
-    let calendarApi = selectInfo.view.calendar
+    const calendarApi = selectInfo.view.calendar
 
     await api.post('/tasks',{
       title:title,
@@ -89,7 +95,6 @@ useEffect(()=>{
 
 
 
-console.log(currentTasks)
   return (
     <div className="home-container container">
       <Header history={history}></Header>
@@ -106,8 +111,8 @@ console.log(currentTasks)
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            events={eventsRef.current} // alternatively, use the `events` setting to fetch from a feed
-            
+            events={tasksRef.current} // alternatively, use the `events` setting to fetch from a feed
+            initialDate={tasksRef.current}
             select={handleDateSelect}
             // eventClick={handleEventClick}
             eventsSet={handleEvents} // called after events are initialized/added/changed/removed
