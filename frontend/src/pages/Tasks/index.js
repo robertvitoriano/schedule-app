@@ -18,6 +18,7 @@ useEffect(()=>{
 
     return(<div className="container tasks-container">
              <Header/>
+             <div className="tasks-content">
              <div className="tasks-scroll-list">
              <ul className="tasks-list">
             <div className="tasks-list-container">
@@ -26,6 +27,7 @@ useEffect(()=>{
               ))} 
             </div>
           </ul>
+          </div>
           </div>
     </div>)
 }
