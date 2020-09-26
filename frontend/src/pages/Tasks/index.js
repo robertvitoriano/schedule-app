@@ -136,7 +136,7 @@ const Tasks = ({ history }) => {
               onChange={(e) => setTaskEnd(e.target.value)}
               placeholder="Fim"
             />
-            <a className="update-button" onClick={e=>{handleTaskUpdate(e,taskToUpdateId)}}>Alterar</a>
+            <a className=" update-modal-button" onClick={e=>{handleTaskUpdate(e,taskToUpdateId)}}>Alterar</a>
           </div>
         </div>
       ) : (

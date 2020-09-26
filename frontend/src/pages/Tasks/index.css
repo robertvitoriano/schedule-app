@@ -69,7 +69,6 @@ height:150px;
 .task-button{
     font-size: 18px;
     cursor: pointer;
-    display: inline;
     color: white;
     font-weight: bold;
 
@@ -106,14 +105,23 @@ height:150px;
   .update-task-modal{
     background-color: aliceblue;
     box-shadow:  2px 2px 2px;
-    width: 600px;
-    height:200px;
+    width: 800px;
+    height:600px;
     position: absolute;
     z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
+
+}
+.update-task-modal input{
+    height: 60px;
+    width:500px;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 15px;
 
 }
 
@@ -126,6 +134,14 @@ height:150px;
     align-items: center;
 
 }
+.update-modal-button{
+    padding: 15px 40px;
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 30px;
+ }
 .task-field-buttons{
   display: flex;
   align-items: center;
