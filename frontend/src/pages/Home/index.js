@@ -26,17 +26,7 @@ const Home = ({ history }) => {
 
 
 useEffect(()=>{
-  // [
-  //   {
-  //     title: 'All-day event',
-  //     start: new Date().toISOString().replace(/T.*$/, '')
-  //   },
-  //   {
-  //     title: 'Timed event',
-  //     start: new Date().toISOString().replace(/T.*$/, '') + 'T12:00:00'
-  //   }
-  // ]
-  const loadTasks = async()=>{
+ const loadTasks = async()=>{
    const  response = await api.get('/tasks');
    setCurrentTasks(response.data);
   }
@@ -114,12 +104,6 @@ useEffect(()=>{
             events={currentTasks} // alternatively, use the `events` setting to fetch from a feed
             locale={ptBrLocale}
             select={handleDateSelect}
-            // eventClick={handleEventClick}
-            // eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-            // eventAdd={function(){}}
-            // eventChange={function(){}}
-            // eventRemove={function(){}}
-            
           />
 
       </div>

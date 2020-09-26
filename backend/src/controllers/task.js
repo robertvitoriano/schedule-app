@@ -30,7 +30,7 @@ module.exports = {
     },
     async update(req,res){
         if(req.body.id){
-            //title, start, end, allDay
+            //title, start, end, allDay,_id
             try{
                 await Task.findByIdAndUpdate( {_id: req.body.id },
                 { title: req.body.title,
@@ -38,8 +38,8 @@ module.exports = {
                   end:req.body.end,
                   allDay:req.body.allDay
              });
-                const tasks = await Task.find();
-                return res.send(tasks   )
+                const task = await Task.findById(req.body.id);
+                return res.send(task)
     
             }catch(e){
                 console.log(e)
