@@ -9,8 +9,8 @@ const Tasks = ({ history }) => {
   const [tasks, setTasks] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
-  const [taskStart, setTaskStart] = useState("");
-  const [taskEnd, setTaskEnd] = useState("");
+  const [taskStartDay, setTaskStartDay] = useState("");
+  const [taskEndDay, setTaskEndDay] = useState("");
   const [taskToUpdateId,setTaskToUpdateId] = useState("");
 
   useEffect(() => {
@@ -48,8 +48,8 @@ const Tasks = ({ history }) => {
     const task = tasks.filter((task)=>task._id === id)[0];
 
     setTaskTitle(task.title);
-    setTaskEnd(task.end);
-    setTaskStart(task.start);
+    setTaskEndDay(task.end);
+    setTaskStartDay(task.start);
   };
   const handleTaskUpdate = async (e,id)=>{
     e.preventDefault();
@@ -57,8 +57,8 @@ const Tasks = ({ history }) => {
   const requestBody =  {
       id:id,
       title:taskTitle,
-      start:taskStart,
-      end:taskEnd
+      start:taskStartDay,
+      end:taskEndDay
 
    }
     fetch("http://localhost:4000/tasks", {
@@ -120,7 +120,7 @@ const Tasks = ({ history }) => {
             >
               X
             </a>
-            <span>Alterar Tarefa</span>
+            <span className="modal-title">Alterar Tarefa</span>
             <input
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
@@ -128,15 +128,15 @@ const Tasks = ({ history }) => {
 
             />
             <input
-              value={taskStart}
-              onChange={(e) => setTaskStart(mask(unMask(e.target.value), ["9999-99-99"]))}
+              value={taskStartDay}
+              onChange={(e) => setTaskStartDay(mask(unMask(e.target.value), ["9999-99-99"]))}
               placeholder="Inicio"
               
 
             />
             <input
-              value={taskEnd}
-              onChange={(e) => setTaskEnd(mask(unMask(e.target.value), ["9999-99-99"]))}
+              value={taskEndDay}
+              onChange={(e) => setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))}
               placeholder="Fim"
             />
             <a className=" update-modal-button" onClick={e=>{handleTaskUpdate(e,taskToUpdateId)}}>Alterar</a>
