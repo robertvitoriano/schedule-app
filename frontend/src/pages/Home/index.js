@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import api from './../../services/api'
 import FullCalendar, { formatDate } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -6,45 +7,55 @@ import interactionPlugin from "@fullcalendar/interaction";
 import Header from "./../../components/Header";
 import logo from "./../../assets/logo-agx-software.png";
 
+
 import "./index.css";
 const Home = ({ history }) => {
-  const [showTaskModal, setShowTaskModal] = useState(false);
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [currentTasks, setCurrentTasks] = useState([]);
-  let eventId = 0;
-  // const tasks = formatDate(events.start, {
+    // const tasks = formatDate(events.start, {
   //   month: "long",
   //   year: "numeric",
   //   day: "numeric",
   //   hour: "numeric",
-  // });
+  // })
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [currentTasks, setCurrentTasks] = useState([]);
+  const eventsRef = useRef(null);
+  let eventId = 0;
+;
 
-  const todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
 
-  const  INITIAL_EVENTS = [
+useEffect(()=>{
+  eventsRef.current= [
     {
-      id: eventId++,
       title: 'All-day event',
-      start: todayStr
+      start: new Date().toISOString().replace(/T.*$/, '')
     },
     {
-      id: eventId++,
       title: 'Timed event',
-      start: todayStr + 'T12:00:00'
+      start: new Date().toISOString().replace(/T.*$/, '') + 'T12:00:00'
     }
   ]
+
+},[])
 
 
 
   const handleDateSelect = (selectInfo) => {
+
+    console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
     let title = prompt('Please enter a new title for your event')
     let calendarApi = selectInfo.view.calendar
 
     calendarApi.unselect() // clear date selection
-
+     function checkFlag() {
+    if(title == false) {
+       window.setTimeout(checkFlag, 100); /* this checks the flag every 100 milliseconds*/
+    } else {
+      /* do something*/
+    }
+}
     if (title) {
       calendarApi.addEvent({
-        id: eventId++,
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,
@@ -53,15 +64,26 @@ const Home = ({ history }) => {
     }
   }
 
+ 
 
 
  const  handleEvents = (events) => {
-    console.log(events);
     setCurrentTasks(events);
+    currentTasks.map((task)=>{
+    console.log(formatDate(task.start, {
+    month: "long",
+    year: "numeric",
+    day: "numeric",
+    hour: "numeric",
+   }))
+
+    })
+
     }
 
 
 
+console.log(currentTasks)
   return (
     <div className="home-container container">
       <Header history={history}></Header>
@@ -78,7 +100,8 @@ const Home = ({ history }) => {
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+            events={eventsRef.current} // alternatively, use the `events` setting to fetch from a feed
+            
             select={handleDateSelect}
             // eventClick={handleEventClick}
             eventsSet={handleEvents} // called after events are initialized/added/changed/removed
