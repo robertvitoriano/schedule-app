@@ -36,20 +36,21 @@ useEffect(()=>{
   //   }
   // ]
   const loadTasks = async()=>{
-  const  response = await api.get('/tasks');
-   tasksRef.current = response.data;
-  }
-  loadTasks();
+   const  response = await api.get('/tasks');
+   setCurrentTasks(response.data);
 
-},[])
+
+  }
+  loadTasks()
+
+},[currentTasks])
 
 
 
   const handleDateSelect = async (selectInfo) => {
-    console.log(tasksRef.current);
     console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
     let title = prompt('Please enter a new title for your event')
-    const calendarApi = selectInfo.view.calendar
+    let calendarApi = selectInfo.view.calendar
 
     await api.post('/tasks',{
       title:title,
@@ -79,19 +80,19 @@ useEffect(()=>{
  
 
 
- const  handleEvents = (events) => {
-    setCurrentTasks(events);
-    currentTasks.map((task)=>{
-    console.log(formatDate(task.start, {
-    month: "long",
-    year: "numeric",
-    day: "numeric",
-    hour: "numeric",
-   }))
+//  const  handleEvents = (events) => {
+//     setCurrentTasks(events);
+//     currentTasks.map((task)=>{
+//     console.log(formatDate(task.start, {
+//     month: "long",
+//     year: "numeric",
+//     day: "numeric",
+//     hour: "numeric",
+//    }))
 
-    })
+//     })
 
-    }
+//     }
 
 
 
@@ -111,11 +112,10 @@ useEffect(()=>{
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            events={tasksRef.current} // alternatively, use the `events` setting to fetch from a feed
-            initialDate={tasksRef.current}
+            events={currentTasks} // alternatively, use the `events` setting to fetch from a feed
             select={handleDateSelect}
             // eventClick={handleEventClick}
-            eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+            // eventsSet={handleEvents} // called after events are initialized/added/changed/removed
             // eventAdd={function(){}}
             // eventChange={function(){}}
             // eventRemove={function(){}}
