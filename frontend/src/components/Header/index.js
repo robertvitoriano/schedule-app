@@ -8,7 +8,7 @@ const Header = ({history}) => {
       <div className="navigation">
           <ul className="navigation-items">
               <li className="navigation-item"><Link to="/home" >Home</Link></li>
-              <li className="navigation-item"><Link to="/tasks">Tarefas</Link></li>
+              <li className="navigation-item"><Link to="/tasks">Gerenciar Tarefas</Link></li>
               <li className="navigation-item"><Link to="/">Logout</Link></li>
 
           </ul>
