@@ -3,6 +3,7 @@ const taskController = require('./../controllers/task');
 
 Router.post('/tasks',taskController.create);
 Router.get('/tasks',taskController.list);
+Router.delete('/tasks',taskController.delete);
 
 
 module.exports = Router;

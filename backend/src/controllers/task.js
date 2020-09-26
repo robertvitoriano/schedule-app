@@ -12,5 +12,21 @@ module.exports = {
         console.log(task);
         task.save();
         return res.send(task);
+    },
+    async delete(req,res){
+        const {id} = req.body;
+        if(id){
+            try{
+                await Task.findByIdAndDelete(id)
+                return res.send({msg:'Successfully deleted'})
+    
+            }catch(e){
+                console.log(e)
+                return res.send(e);
+            }
+
+        }else{
+            return res.status(400).send({msg:"No Id received"})
+        }
     }
 }
