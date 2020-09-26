@@ -1,0 +1,39 @@
+.tasks-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tasks-scroll-list ul{
+    overflow: hidden;
+    overflow-y: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    list-style: none;
+    width:400px;
+    position: relative;
+    height: 300px;
+    
+}
+
+
+
+.tasks-scroll-list li{
+font-size: 40px;
+background-color: aliceblue;
+border: solid 1px black;
+width: 100%;
+text-align: center;
+margin-right:25px;
+
+}
+.tasks-list-container{
+    width:100%;
+    position: absolute;
+    top:0px;
+    background-color: blueviolet;
+
+}
