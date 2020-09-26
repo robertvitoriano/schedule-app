@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { mask, unMask } from "remask";
+
 import api from "./../../services/api";
 import Header from "../../components/Header";
 import "./index.css";

@@ -17,19 +17,6 @@
 
 
 
-.task-modal{
-    background-color: aliceblue;
-    box-shadow:  2px 2px 2px;
-    width: 600px;
-    height:200px;
-    position: absolute;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-
-}
 
 .add-task-button{
 
@@ -45,14 +32,7 @@
 
 
 }
-.task-modal-content{
-  
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 
-}
 
 .close-button{
     border:red solid 2px;
