@@ -241,7 +241,7 @@ const Tasks = ({ history }) => {
               ""
             )}
             <a
-              className=" update-modal-button"
+              className=" update-modal-button modal-button"
               onClick={(e) => {
                 handleTaskUpdate(e, taskToUpdateId);
               }}

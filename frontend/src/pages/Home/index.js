@@ -268,14 +268,23 @@ const handleUpdate = ()=>{
             ) : (
               ""
             )}
+                        <a
+              className=" delete-modal-button modal-button"
+              onClick={(e) => {
+                handleUpdate(e);
+              }}
+            >
+              Remover
+            </a>
             <a
-              className=" update-modal-button"
+              className="update-modal-button modal-button"
               onClick={(e) => {
                 handleUpdate(e);
               }}
             >
               Alterar
             </a>
+
           </div>
         </div>
       ) : (
