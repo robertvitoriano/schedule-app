@@ -6,7 +6,6 @@ import api from './../../services/api'
 
 import './index.css'
  const Login = ({history})=>{
-    console.log('Login');
     const [email,setEmail] = useState('');
     const[password,setPassword] = useState('');
 
@@ -17,8 +16,9 @@ import './index.css'
             email:email,
             password:password
         });
+        localStorage.setItem('name',response.data.user.name);
         localStorage.setItem('token',response.data.token);
-        history.push('/home');
+         history.push('/home');
     }
  
 

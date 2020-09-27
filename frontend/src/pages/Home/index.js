@@ -28,6 +28,8 @@ const Home = ({ history }) => {
   const currentTasksRef = useRef([]);
 
   const token = localStorage.getItem('token');
+  const name = localStorage.getItem('name');
+
   useEffect(() => {
     const loadTasks = async () => {
       const response = await api.get("/tasks/list",{
@@ -269,7 +271,7 @@ const Home = ({ history }) => {
           <h1 className="welcome-message">
             Seja Bem Vindo(a)
             <br />
-            Usuário
+            {name}
           </h1>
           <span className="add-task-warning warning-message">
             Clique em uma data no calendário para adicionar um evento
