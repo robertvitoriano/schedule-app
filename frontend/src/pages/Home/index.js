@@ -22,22 +22,35 @@ const Home = ({ history }) => {
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [currentTasks, setCurrentTasks] = useState([]);
-  const infoRef = useRef(null);
+const currentTasksRef = useRef([]);
 
 
 useEffect(()=>{
  const loadTasks = async()=>{
    const  response = await api.get('/tasks');
-   setCurrentTasks(response.data);
-  }
+   response.data.map((task)=>{
+     currentTasksRef.current.push({
+      title:task.title,
+      start: task.dayStart,
+      end: task.dayEnd,
+      allDay: task.allDay 
+    
+    })
+    
+ })
+ setCurrentTasks(currentTasksRef.current)
+
+}
   loadTasks()
+
 
 },[])
 
+console.log(currentTasks);
 
 
   const handleDateSelect = async (selectInfo) => {
-    console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
+    // console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
     let title = prompt('Digite o título da nova tarefa')
     let calendarApi = selectInfo.view.calendar
 
@@ -52,13 +65,15 @@ useEffect(()=>{
         end: selectInfo.endStr,
         allDay: selectInfo.allDay
       })
+
       await api.post('/tasks',{
         title:title,
-        start:selectInfo.startStr,
-        end:selectInfo.endStr,
+        dayStart:selectInfo.startStr,
+        dayEnd:selectInfo.endStr,
+        hourStart:selectInfo.startStr,
+        hourEnd:selectInfo.endStr,
         allDay:selectInfo.allDay
       })
-      document.location.reload();
     }
 
   }
