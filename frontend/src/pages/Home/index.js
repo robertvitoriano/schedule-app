@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { mask, unMask } from "remask";
+
 import api from './../../services/api'
 import FullCalendar, { formatDate } from "@fullcalendar/react";
 import ptBrLocale from '@fullcalendar/core/locales/pt-br';
@@ -13,15 +15,18 @@ import logo from "./../../assets/logo-agx-software.png";
 
 import "./index.css";
 const Home = ({ history }) => {
-    // const tasks = formatDate(events.start, {
-  //   month: "long",
-  //   year: "numeric",
-  //   day: "numeric",
-  //   hour: "numeric",
-  // })
+
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [currentTasks, setCurrentTasks] = useState([]);
+  const[taskId,setTaskId] = useState('');
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskStartDay, setTaskStartDay] = useState("");
+  const [taskEndDay, setTaskEndDay] = useState("");
+  const [taskStartHour, setTaskStartHour] = useState("");
+  const [taskEndHour, setTaskEndHour] = useState("");
+  const [hasTime, setHasTime] = useState(false);
+
 const currentTasksRef = useRef([]);
 
 
@@ -110,43 +115,34 @@ console.log(currentTasks);
 
   }
 
-  
-
-//  const  handleEvents = (events) => {
-//     setCurrentTasks(events);
-//     currentTasks.map((task)=>{
-//     console.log(formatDate(task.start, {
-//     month: "long",
-//     year: "numeric",
-//     day: "numeric",
-//     hour: "numeric",
-//    }))
-
-//     })
-
-//     }
 const handleEventClick = (clickInfo) => {
   const chosenTask = currentTasks.filter((task) => {
     return clickInfo.event.title == task.title;
   })[0];
+  if(chosenTask.start.includes('T')){
+    setHasTime(true);
+  }else{
+    setHasTime(false);
+  }
   console.log(chosenTask);
-  const id = chosenTask._id;
-
-  if (window.confirm(`Você realmente quer remover a tarefa '${clickInfo.event.title}'`)) {
-    clickInfo.event.remove()
+ setTaskId(chosenTask._id);
+ setShowTaskModal(true);
+}
+const handleDelete = ()=>{
     fetch("http://localhost:4000/tasks", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body:JSON.stringify({id}),
+      body:JSON.stringify({taskId}),
     }).then((response)=>{
       if (response.status === 200) {
       const remainingTasks = currentTasks.filter((task) => {
-        return task._id !== id;
+        return task._id !== taskId;
       });
       setCurrentTasks(remainingTasks);
     }
     })
-  }
+}
+const handleUpdate = ()=>{
 
 }
 
@@ -188,6 +184,104 @@ const handleEventClick = (clickInfo) => {
       </div>
 
       </div>
+      {showTaskModal ? (
+        <div className="update-task-modal">
+          <div className="update-task-modal-content">
+            <a
+              className="close-button"
+              onClick={(e) => setShowTaskModal(false)}
+            >
+              X
+            </a>
+            <span className="modal-title">Alterar Tarefa</span>
+            <label className="update-task-label">tarefa</label>
+
+            <textarea
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
+              placeholder="Tarefa"
+            />
+            {!hasTime ? (
+              <div className="fields-without-time">
+                <label className="update-task-label">Data de termino</label>
+
+                <input
+                  value={taskStartDay}
+                  onChange={(e) =>
+                    setTaskStartDay(
+                      mask(unMask(e.target.value), ["9999-99-99"])
+                    )
+                  }
+                  placeholder="Inicio"
+                />
+                <label className="update-task-label">Data de Término</label>
+
+                <input
+                  value={taskEndDay}
+                  onChange={(e) =>
+                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))
+                  }
+                  placeholder="Fim"
+                />
+              </div>
+            ) : (
+              ""
+            )}
+            {hasTime ? (
+              <div className="fields-without-time">
+                <label className="update-task-label">Data de inicio</label>
+
+                <input
+                  value={taskStartDay}
+                  onChange={(e) =>
+                    setTaskStartDay(
+                      mask(unMask(e.target.value), ["9999-99-99"])
+                    )
+                  }
+                  placeholder="Inicio"
+                />
+                <label className="update-task-label">Horário de Início</label>
+                <input
+                  value={taskStartHour}
+                  onChange={(e) =>
+                    setTaskStartHour(mask(unMask(e.target.value), ["99:99:99"]))
+                  }
+                  placeholder="Inicio"
+                />
+                <label className="update-task-label">Data de termino</label>
+                <input
+                  value={taskEndDay}
+                  onChange={(e) => {
+                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]));
+                  }}
+                  placeholder="Inicio"
+                />
+                <label className="update-task-label">Horário de Termino</label>
+                <input
+                  value={taskEndHour}
+                  onChange={(e) => {
+                    setTaskEndHour(mask(unMask(e.target.value), ["99:99:99"]));
+                  }}
+                  placeholder="Fim"
+                />
+              </div>
+            ) : (
+              ""
+            )}
+            <a
+              className=" update-modal-button"
+              onClick={(e) => {
+                handleUpdate(e);
+              }}
+            >
+              Alterar
+            </a>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {showTaskModal ? <div className="translucent"></div> : ""}
 
     </div>
   );
