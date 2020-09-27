@@ -157,6 +157,44 @@ const Home = ({ history }) => {
     })[0]
     console.log(chosenTask);
 
+    response.data.map((task) => {
+      if (task.allDay) {
+        currentTasksRef.current.push({
+          title: task.title,
+          start: task.dayStart,
+          end: task.dayEnd,
+          allDay: task.allDay,
+          _id: task._id,
+        });
+      } else {
+        currentTasksRef.current.push({
+          title: task.title,
+          start: task.dayStart + "T" + task.hourStart + "-03:00",
+          end: task.dayEnd + "T" + task.hourEnd + "-03:00",
+          allDay: task.allDay,
+          _id: task._id,
+        });
+      }
+    });
+    setCurrentTasks(currentTasksRef.current);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     if (
       Number(taskStartHour.split(":")[0]) >= 24 ||
       Number(taskStartHour.split(":")[1]) >= 60 ||

@@ -19,19 +19,17 @@ module.exports = {
             try{
                 await Task.findByIdAndDelete(req.body.id)
                 const tasks = await Task.find();
-                return res.send(tasks   )
-    
+                return res.send(tasks)
             }catch(e){
-                console.log(e)
+                console.log(e);
                 return res.send(e);
             }
-
         }else{
             return res.status(400).send({msg:"No Id received"})
         }
     },
     async update(req,res){
-        console.log(req.body.id)
+        console.log(req.body.id);
         if(req.body.id){
             //title, start, end, allDay,_id
             try{
@@ -45,18 +43,14 @@ module.exports = {
                  });
                 const task = await Task.findById(req.body.id);
                 return res.send(task)
-    
             }catch(e){
                 console.log(e)
                 return res.send(e);
             }
-
         }else{
             return res.status(400).send({msg:"No Id received"})
         }
     }
-
-
-    }
+}
 
 
