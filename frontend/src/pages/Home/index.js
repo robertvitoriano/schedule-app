@@ -158,40 +158,9 @@ const Home = ({ history }) => {
     const chosenTask = tasks.filter((task) => {
       return task._id === taskId;
     })[0];
-    const chosenCalendarTask = currentTasks.filter((task) => {
-      return task.title === taskTitle;
-    })[0];
     const tasksWithoutChosenTask = currentTasks.filter((task) => {
       return task._id !== taskId;
     });
- console.log(tasksWithoutChosenTask);
-
-
-    if (!taskStartHour) {
-      setCurrentTasks([
-        ...tasksWithoutChosenTask,
-        {
-          title: taskTitle,
-          start: taskStartDay,
-          end: taskEndDay,
-          _id: taskId,
-          allDay:true
-        },
-      ]);
-    } else {
-      setCurrentTasks([
-        ...tasksWithoutChosenTask,
-        {
-          title: taskTitle,
-          start: taskStartDay + "T" + taskStartHour + "-03:00",
-          end: taskEndDay + "T" + taskEndHour + "-03:00",
-          _id: taskId,
-          allDay:false
-
-        },
-      ]);
-    }
-
     let requestBody;
   
 
@@ -216,16 +185,44 @@ const Home = ({ history }) => {
       hourStart: taskStartHour,
       allDay:false
     };
-
-
-
    }
 
     fetch("http://localhost:4000/tasks", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
+    }).then((response)=>{
+       if(response.status ===200){
+        if (!taskStartHour) {
+          setCurrentTasks([
+            ...tasksWithoutChosenTask,
+            {
+              title: taskTitle,
+              start: taskStartDay,
+              end: taskEndDay,
+              _id: taskId,
+              allDay:taskAllDayFlag
+            },
+          ]);
+        } else {
+          setCurrentTasks([
+            ...tasksWithoutChosenTask,
+            {
+              title: taskTitle,
+              start: taskStartDay + "T" + taskStartHour + "-03:00",
+              end: taskEndDay + "T" + taskEndHour + "-03:00",
+              _id: taskId,
+              allDay:taskAllDayFlag
+    
+            },
+          ]);
+        }
+       }
+       setShowTaskModal(false);
     })
+    
+    
+
   };
 
   return (
