@@ -26,6 +26,7 @@ const Home = ({ history }) => {
   const [taskStartHour, setTaskStartHour] = useState("");
   const [taskEndHour, setTaskEndHour] = useState("");
   const [hasTime, setHasTime] = useState(false);
+  const[isTimeValid,setIsTimeValid] = useState(false);
 
 const currentTasksRef = useRef([]);
 
@@ -119,12 +120,32 @@ const handleEventClick = (clickInfo) => {
   const chosenTask = currentTasks.filter((task) => {
     return clickInfo.event.title == task.title;
   })[0];
+
+
   if(chosenTask.start.includes('T')){
     setHasTime(true);
+    const formatedHourStart = chosenTask.start.split('T')[1].replace('-03:00','');
+    const formatedHourEnd =chosenTask.end.split('T')[1].replace('-03:00','');
+    const formatedDayStart = chosenTask.start.split('T')[0];
+    const formatedDayEnd = chosenTask.end.split('T')[0];
+    setTaskTitle(chosenTask.title);
+    setTaskEndDay(formatedDayEnd);
+    setTaskStartDay(formatedDayStart);
+    setTaskStartHour(formatedHourStart);
+    setTaskEndHour(formatedHourEnd);
+    setHasTime(true);
+    
   }else{
+    const formatedDayStart = chosenTask.start.split('T')[0];
+    const formatedDayEnd = chosenTask.end.split('T')[0];
+    setTaskTitle(chosenTask.title);
+    setTaskEndDay(formatedDayEnd);
+    setTaskStartDay(formatedDayStart);
     setHasTime(false);
   }
-  console.log(chosenTask);
+
+
+
  setTaskId(chosenTask._id);
  setShowTaskModal(true);
 }
@@ -142,9 +163,57 @@ const handleDelete = ()=>{
     }
     })
 }
-const handleUpdate = ()=>{
+const handleUpdate = async (e, id) => {
+  e.preventDefault();
+  let requestBody;
+  if (
+    Number(taskStartHour.split(":")[0]) >= 24 ||
+    Number(taskStartHour.split(":")[1]) >= 60 ||
+    Number(taskStartHour.split(":")[2]) >= 60
+  ) {
+    setIsTimeValid(false);
+    alert("Horário informado é inválido");
+    setTaskEndHour("");
+    setTaskStartHour("");
+  } else if (
+    Number(taskStartDay.split("-")[0]) > 2020 ||
+    Number(taskStartDay.split("-")[2]) > 30
+  ) {
+    setIsTimeValid(false);
+    alert("Data informada é inválida é inválido");
+    setTaskEndDay("");
+    setTaskStartDay("");
+  } else {
+    setIsTimeValid(true);
+  }
 
-}
+  if (isTimeValid) {
+    if (!hasTime) {
+      requestBody = {
+        id: id,
+        title: taskTitle,
+        dayEnd: taskEndDay,
+        dayStart: taskStartDay,
+      };
+    } else {
+      requestBody = {
+        id: id,
+        title: taskTitle,
+        dayEnd: taskEndDay,
+        dayStart: taskStartDay,
+        hourEnd: taskEndHour,
+        hourStart: taskStartHour,
+      };
+    }
+
+    fetch("http://localhost:4000/tasks", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody),
+    });
+  }
+};
+
 
   return (
     <div className="home-container container">
