@@ -13,6 +13,8 @@ module.exports = {
         return res.send(task);
     },
     async delete(req,res){
+        console.log(req.body.id)
+
         if(req.body.id){
             try{
                 await Task.findByIdAndDelete(req.body.id)
