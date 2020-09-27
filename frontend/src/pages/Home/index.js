@@ -22,6 +22,7 @@ const Home = ({ history }) => {
   const [taskEndDay, setTaskEndDay] = useState("");
   const [taskStartHour, setTaskStartHour] = useState("");
   const [taskEndHour, setTaskEndHour] = useState("");
+  const [taskAllDayFlag,setTaskAllDayFlag] = useState('');
   const [hasTime, setHasTime] = useState(false);
   const [isTimeValid, setIsTimeValid] = useState(false);
   const currentTasksRef = useRef([]);
@@ -56,7 +57,7 @@ const Home = ({ history }) => {
     let title = prompt("Digite o título da nova tarefa");
     let calendarApi = selectInfo.view.calendar;
 
-    calendarApi.unselect(); // clear date selection
+    calendarApi.unselect();
 
     if (title) {
       calendarApi.addEvent({
@@ -116,6 +117,9 @@ const Home = ({ history }) => {
       setTaskStartDay(formatedDayStart);
       setTaskStartHour(formatedHourStart);
       setTaskEndHour(formatedHourEnd);
+      setTaskAllDayFlag(chosenTask.allDay);
+
+
       setHasTime(true);
     } else {
       const formatedDayStart = chosenTask.start.split("T")[0];
@@ -124,6 +128,8 @@ const Home = ({ history }) => {
       setTaskEndDay(formatedDayEnd);
       setTaskStartDay(formatedDayStart);
       setHasTime(false);
+      setTaskAllDayFlag(chosenTask.allDay);
+
     }
     setTaskId(chosenTask._id);
     setShowTaskModal(true);
@@ -132,7 +138,7 @@ const Home = ({ history }) => {
     fetch("http://localhost:4000/tasks", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id:taskId }),
+      body: JSON.stringify({ id: taskId }),
     }).then((response) => {
       if (response.status === 200) {
         const remainingTasks = currentTasks.filter((task) => {
@@ -144,37 +150,44 @@ const Home = ({ history }) => {
     setShowTaskModal(false);
   };
 
-
-
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const response= await api.get('/tasks');
+    const response = await api.get("/tasks");
     const tasks = response.data;
-    const chosenTask = tasks.filter((task)=>{
-      return task._id === taskId
-    })[0]
-    const chosenCalendarTask =  currentTasks.filter((task)=>{
-      return task.title === taskTitle
-    })[0]
-   const tasksWithoutChosenTask=  response.data.filter((task) => {
-              return task._id !== taskId;
+    const chosenTask = tasks.filter((task) => {
+      return task._id === taskId;
+    })[0];
+    const chosenCalendarTask = currentTasks.filter((task) => {
+      return task.title === taskTitle;
+    })[0];
+    const tasksWithoutChosenTask = response.data.filter((task) => {
+      return task._id !== taskId;
     });
 
     if (chosenTask.allDay) {
-      setCurrentTasks([...tasksWithoutChosenTask,{
-        title: taskTitle,
-        start: taskStartDay,
-        end: taskEndDay,
-        _id: taskId,
-      }]);
+      setCurrentTasks([
+        ...tasksWithoutChosenTask,
+        {
+          title: taskTitle,
+          start: taskStartDay,
+          end: taskEndDay,
+          _id: taskId,
+          allDay:taskAllDayFlag
+        },
+      ]);
     } else {
-      setCurrentTasks([...currentTasks,{
-        title: taskTitle,
-        start: taskStartDay + "T" + taskStartHour + "-03:00",
-        end: taskEndDay + "T" + taskEndHour + "-03:00",
-        _id:taskId,
-      }]);
+      setCurrentTasks([
+        ...currentTasks,
+        {
+          title: taskTitle,
+          start: taskStartDay + "T" + taskStartHour + "-03:00",
+          end: taskEndDay + "T" + taskEndHour + "-03:00",
+          _id: taskId,
+          allDay:taskAllDayFlag
+
+        },
+      ]);
     }
 
     if (
@@ -189,38 +202,29 @@ const Home = ({ history }) => {
       Number(taskStartDay.split("-")[2]) > 30
     ) {
       setIsTimeValid(false);
-     return alert("Data informada é inválida é inválido");
+      return alert("Data informada é inválida é inválido");
     } else {
       setIsTimeValid(true);
     }
     let requestBody;
-  
-      
-        requestBody = {
-          id: taskId,
-          title: taskTitle,
-          dayEnd: taskEndDay,
-          dayStart: taskStartDay,
-        };
-      
-        requestBody = {
-          id: taskId,
-          title: taskTitle,
-          dayEnd: taskEndDay,
-          dayStart: taskStartDay,
-          hourEnd: taskEndHour,
-          hourStart: taskStartHour,
-        };
-      
 
-      fetch("http://localhost:4000/tasks", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      }).then((response)=>{
-        console.log(response.data);
-      });
-    
+    requestBody = {
+      id: taskId,
+      title: taskTitle,
+      dayEnd: taskEndDay,
+      dayStart: taskStartDay,
+      hourEnd: taskEndHour,
+      hourStart: taskStartHour,
+      allDay:taskAllDayFlag
+    };
+
+    fetch("http://localhost:4000/tasks", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody),
+    }).then((response) => {
+      console.log(response.data);
+    });
   };
 
   return (
@@ -283,43 +287,41 @@ const Home = ({ history }) => {
               placeholder="Tarefa"
             />
 
-              <div className="fields-without-time">
-                <label className="update-task-label">Data de inicio</label>
+            <div className="fields-without-time">
+              <label className="update-task-label">Data de inicio</label>
 
-                <input
-                  value={taskStartDay}
-                  onChange={(e) =>
-                    setTaskStartDay(
-                      mask(unMask(e.target.value), ["9999-99-99"])
-                    )
-                  }
-                  placeholder="Inicio"
-                />
-                <label className="update-task-label">Horário de Início</label>
-                <input
-                  value={taskStartHour}
-                  onChange={(e) =>
-                    setTaskStartHour(mask(unMask(e.target.value), ["99:99:99"]))
-                  }
-                  placeholder="Inicio"
-                />
-                <label className="update-task-label">Data de termino</label>
-                <input
-                  value={taskEndDay}
-                  onChange={(e) => {
-                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]));
-                  }}
-                  placeholder="Inicio"
-                />
-                <label className="update-task-label">Horário de Termino</label>
-                <input
-                  value={taskEndHour}
-                  onChange={(e) => {
-                    setTaskEndHour(mask(unMask(e.target.value), ["99:99:99"]));
-                  }}
-                  placeholder="Fim"
-                />
-              </div>
+              <input
+                value={taskStartDay}
+                onChange={(e) =>
+                  setTaskStartDay(mask(unMask(e.target.value), ["9999-99-99"]))
+                }
+                placeholder="Inicio"
+              />
+              <label className="update-task-label">Horário de Início</label>
+              <input
+                value={taskStartHour}
+                onChange={(e) =>
+                  setTaskStartHour(mask(unMask(e.target.value), ["99:99:99"]))
+                }
+                placeholder="Inicio"
+              />
+              <label className="update-task-label">Data de termino</label>
+              <input
+                value={taskEndDay}
+                onChange={(e) => {
+                  setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]));
+                }}
+                placeholder="Inicio"
+              />
+              <label className="update-task-label">Horário de Termino</label>
+              <input
+                value={taskEndHour}
+                onChange={(e) => {
+                  setTaskEndHour(mask(unMask(e.target.value), ["99:99:99"]));
+                }}
+                placeholder="Fim"
+              />
+            </div>
             <a
               className=" delete-modal-button modal-button"
               onClick={(e) => {
