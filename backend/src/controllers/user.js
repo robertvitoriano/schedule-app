@@ -58,17 +58,7 @@ module.exports = {
     }
 },
 
-  async logout(req, res) {
-    console.log(req.body.email)
-      try {
-          req.token ='';
-        const user = await User.findOne({email:req.body.email});
-       return res.status(200).send(user);
-      } catch (e) {
-        res.send(e);
-        console.log(e);
-      }
-  },
+ 
 
  
 };
