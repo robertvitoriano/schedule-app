@@ -110,6 +110,7 @@ const Home = ({ history }) => {
       const formatedHourEnd = chosenTask.end
         .split("T")[1]
         .replace("-03:00", "");
+        console.log(formatedHourEnd)
       const formatedDayStart = chosenTask.start.split("T")[0];
       const formatedDayEnd = chosenTask.end.split("T")[0];
       setTaskTitle(chosenTask.title);
@@ -155,45 +156,34 @@ const Home = ({ history }) => {
     const chosenTask = tasks.filter((task)=>{
       return task._id === taskId
     })[0]
-    console.log(chosenTask);
-
-    response.data.map((task) => {
-      if (task.allDay) {
-        currentTasksRef.current.push({
-          title: task.title,
-          start: task.dayStart,
-          end: task.dayEnd,
-          allDay: task.allDay,
-          _id: task._id,
-        });
-      } else {
-        currentTasksRef.current.push({
-          title: task.title,
-          start: task.dayStart + "T" + task.hourStart + "-03:00",
-          end: task.dayEnd + "T" + task.hourEnd + "-03:00",
-          allDay: task.allDay,
-          _id: task._id,
-        });
-      }
+    const chosenCalendarTask =  currentTasks.filter((task)=>{
+      return task.title === taskTitle
+    })[0]
+   const tasksWithoutChosenTask=  response.data.filter((task) => {
+              return task._id !== taskId;
     });
-    setCurrentTasks(currentTasksRef.current);
+
+    console.log(tasksWithoutChosenTask);
+    console.log(chosenCalendarTask);
+    console.log(chosenTask.allDay);
+  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if (chosenTask.allDay) {
+      setCurrentTasks([...tasksWithoutChosenTask,{
+        title: taskTitle,
+        start: taskStartDay,
+        end: taskEndDay,
+        _id: taskId,
+      }]);
+    } else {
+      setCurrentTasks([...currentTasks,{
+        title: taskTitle,
+        start: taskStartDay + "T" + taskStartHour + "-03:00",
+        end: taskEndDay + "T" + taskEndHour + "-03:00",
+        _id:taskId,
+      }]);
+    }
 
     if (
       Number(taskStartHour.split(":")[0]) >= 24 ||
@@ -219,11 +209,6 @@ const Home = ({ history }) => {
   
     if (isTimeValid) {
       if (!hasTime) {
-     const updatedArray = tasks.filter((task)=>{
-          return task.title !== chosenTask.tittle
-         
-        })
-
         requestBody = {
           id: taskId,
           title: taskTitle,
