@@ -84,15 +84,16 @@ const Tasks = ({ history }) => {
     ) {
       alert("Data Inválida, digite uma data válida.");
     } else if (
-      taskStartHour.split(":")[0] >= 0 &&
-      taskStartHour.split(":")[1] >= 0 &&
-      taskStartHour.split(":")[1] <= 59 &&
-      taskStartHour.split(":")[2] >= 0 &&
-      taskStartHour.split(":")[2] <= 59 &&
-      taskEndHour.split(":")[1] >= 0 &&
-      taskEndHour.split(":")[1] <= 59 &&
-      taskEndHour.split(":")[2] >= 0 &&
-      taskEndHour.split(":")[2] <= 59
+      !(Number(taskStartHour.split(":")[0]) >= 0 &&
+      Number(taskStartHour.split(":")[0]) <= 23 &&
+      Number(taskStartHour.split(":")[1]) >= 0 &&
+      Number(taskStartHour.split(":")[1]) <= 59 &&
+      Number(taskStartHour.split(":")[2]) >= 0 &&
+      Number(taskStartHour.split(":")[2]) <= 59 &&
+      Number(taskEndHour.split(":")[1]) >= 0 &&
+      Number(taskEndHour.split(":")[1]) <= 59 &&
+      Number(taskEndHour.split(":")[2]) >= 0 &&
+      Number(taskEndHour.split(":")[2]) <= 59)
     ) {
       alert("Horário inválido, digite um horário válido.");
 
