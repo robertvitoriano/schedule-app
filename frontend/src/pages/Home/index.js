@@ -28,12 +28,14 @@ const currentTasksRef = useRef([]);
 useEffect(()=>{
  const loadTasks = async()=>{
    const  response = await api.get('/tasks');
+   console.log(response.data);
    response.data.map((task)=>{
      currentTasksRef.current.push({
       title:task.title,
       start: task.dayStart,
       end: task.dayEnd,
-      allDay: task.allDay 
+      allDay: task.allDay,
+      _id:task._id 
     
     })
     
@@ -65,15 +67,32 @@ console.log(currentTasks);
         end: selectInfo.endStr,
         allDay: selectInfo.allDay
       })
+       if(selectInfo.startStr.includes('T')){
+         const formatedHourStart = selectInfo.startStr.split('T')[1].replace('-03:00','');
+         const formatedHourEnd =selectInfo.endStr.split('T')[1].replace('-03:00','');
+         const formatedDayStart = selectInfo.startStr.split('T')[0];
+         const formatedDayEnd = selectInfo.endStr.split('T')[0]
 
-      await api.post('/tasks',{
-        title:title,
-        dayStart:selectInfo.startStr,
-        dayEnd:selectInfo.endStr,
-        hourStart:selectInfo.startStr,
-        hourEnd:selectInfo.endStr,
-        allDay:selectInfo.allDay
-      })
+        await api.post('/tasks',{
+          title:title,
+          dayStart:formatedDayStart,
+          dayEnd:formatedDayEnd,
+          hourStart:formatedHourStart,
+          hourEnd:formatedHourEnd,
+          allDay:selectInfo.allDay
+        })
+
+       }else{
+        await api.post('/tasks',{
+          title:title,
+          dayStart:selectInfo.startStr,
+          dayEnd:selectInfo.endStr,
+          allDay:selectInfo.allDay
+        })
+
+
+       }  
+
     }
 
   }
@@ -114,8 +133,9 @@ const handleEventClick = (clickInfo) => {
       setCurrentTasks(remainingTasks);
     }
     })
-
   }
+  document.location.reload();
+
 }
 
   return (
