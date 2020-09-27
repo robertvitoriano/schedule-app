@@ -178,7 +178,7 @@ const Home = ({ history }) => {
       alert("Data Inválida, digite uma data válida.");
 
 
-    }else{
+    }else  {
       let requestBody;
 
       if (!taskStartHour) {
