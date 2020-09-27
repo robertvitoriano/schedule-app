@@ -141,6 +141,8 @@ const Home = ({ history }) => {
       setTaskStartDay(formatedDayStart);
       setHasTime(false);
       setTaskAllDayFlag(chosenTask.allDay);
+      setTaskStartHour('00:00:00');
+      setTaskEndHour('00:00:00');
     }
     setTaskId(chosenTask._id);
     setShowTaskModal(true);
@@ -169,16 +171,15 @@ const Home = ({ history }) => {
     });
     const today = new Date();
     const year = today.getFullYear();
-    const month = today.getMonth() + 1;
 
     if (
       !(Number(taskStartDay.split("-")[0]) >= year &&
-      Number(taskStartDay.split("-")[2]) <= 30 &&
+      Number(taskStartDay.split("-")[2]) <= 31 &&
       Number(taskStartDay.split("-")[2]) >= 1 &&
       (Number(taskStartDay.split("-")[1]) >= 1) &
         (Number(taskStartDay.split("-")[1]) <= 12) &
         (Number(taskEndDay.split("-")[0]) >= year) &&
-      Number(taskEndDay.split("-")[2]) <= 30 &&
+      Number(taskEndDay.split("-")[2]) <= 31 &&
       Number(taskEndDay.split("-")[2]) >= 1 &&
       Number(taskEndDay.split("-")[1]) >= 1 &&
       Number(taskEndDay.split("-")[1]) <= 12)

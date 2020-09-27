@@ -60,8 +60,8 @@ const Tasks = ({ history }) => {
       setTaskTitle(task.title);
       setTaskEndDay(task.dayEnd);
       setTaskStartDay(task.dayStart);
-      setTaskStartHour(task.hourStart);
-      setTaskEndHour(task.hourEnd);
+      setTaskStartHour('00:00:00');
+      setTaskEndHour('00:00:00');
       setHasTime(true);
     }
   };
@@ -75,12 +75,12 @@ const Tasks = ({ history }) => {
     if (
       !(
         Number(taskStartDay.split("-")[0]) >= year &&
-        Number(taskStartDay.split("-")[2]) <= 30 &&
+        Number(taskStartDay.split("-")[2]) <= 31 &&
         Number(taskStartDay.split("-")[2]) >= 1 &&
         (Number(taskStartDay.split("-")[1]) >= 1) &
           (Number(taskStartDay.split("-")[1]) <= 12) &
           (Number(taskEndDay.split("-")[0]) >= year) &&
-        Number(taskEndDay.split("-")[2]) <= 30 &&
+        Number(taskEndDay.split("-")[2]) <= 31 &&
         Number(taskEndDay.split("-")[2]) >= 1 &&
         Number(taskEndDay.split("-")[1]) >= 1 &&
         Number(taskEndDay.split("-")[1]) <= 12
