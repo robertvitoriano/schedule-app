@@ -22,7 +22,7 @@ const Home = ({ history }) => {
   const [taskEndDay, setTaskEndDay] = useState("");
   const [taskStartHour, setTaskStartHour] = useState("");
   const [taskEndHour, setTaskEndHour] = useState("");
-  const [taskAllDayFlag,setTaskAllDayFlag] = useState('');
+  const [taskAllDayFlag, setTaskAllDayFlag] = useState("");
   const [hasTime, setHasTime] = useState(false);
   const [isTimeValid, setIsTimeValid] = useState(false);
   const currentTasksRef = useRef([]);
@@ -119,7 +119,6 @@ const Home = ({ history }) => {
       setTaskEndHour(formatedHourEnd);
       setTaskAllDayFlag(chosenTask.allDay);
 
-
       setHasTime(true);
     } else {
       const formatedDayStart = chosenTask.start.split("T")[0];
@@ -129,7 +128,6 @@ const Home = ({ history }) => {
       setTaskStartDay(formatedDayStart);
       setHasTime(false);
       setTaskAllDayFlag(chosenTask.allDay);
-
     }
     setTaskId(chosenTask._id);
     setShowTaskModal(true);
@@ -161,68 +159,75 @@ const Home = ({ history }) => {
     const tasksWithoutChosenTask = currentTasks.filter((task) => {
       return task._id !== taskId;
     });
-    let requestBody;
-  
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
 
-   if(!taskStartHour){
-    requestBody = {
-      id: taskId,
-      title: taskTitle,
-      dayEnd: taskEndDay,
-      dayStart: taskStartDay,
-      hourEnd: taskEndHour,
-      hourStart: taskStartHour,
-      allDay:true
-    };
+    if (
+      Number(taskStartDay.split("-")[0]) >= year &&
+      Number(taskStartDay.split("-")[1]) >= day &&
+      Number(taskStartDay.split("-")[2]) >= month
+    ) {
+      let requestBody;
 
-   }else{
-    requestBody = {
-      id: taskId,
-      title: taskTitle,
-      dayEnd: taskEndDay,
-      dayStart: taskStartDay,
-      hourEnd: taskEndHour,
-      hourStart: taskStartHour,
-      allDay:false
-    };
-   }
+      if (!taskStartHour) {
+        requestBody = {
+          id: taskId,
+          title: taskTitle,
+          dayEnd: taskEndDay,
+          dayStart: taskStartDay,
+          hourEnd: taskEndHour,
+          hourStart: taskStartHour,
+          allDay: true,
+        };
+      } else {
+        requestBody = {
+          id: taskId,
+          title: taskTitle,
+          dayEnd: taskEndDay,
+          dayStart: taskStartDay,
+          hourEnd: taskEndHour,
+          hourStart: taskStartHour,
+          allDay: false,
+        };
+      }
 
-    fetch("http://localhost:4000/tasks", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestBody),
-    }).then((response)=>{
-       if(response.status ===200){
-        if (!taskStartHour) {
-          setCurrentTasks([
-            ...tasksWithoutChosenTask,
-            {
-              title: taskTitle,
-              start: taskStartDay,
-              end: taskEndDay,
-              _id: taskId,
-              allDay:taskAllDayFlag
-            },
-          ]);
-        } else {
-          setCurrentTasks([
-            ...tasksWithoutChosenTask,
-            {
-              title: taskTitle,
-              start: taskStartDay + "T" + taskStartHour + "-03:00",
-              end: taskEndDay + "T" + taskEndHour + "-03:00",
-              _id: taskId,
-              allDay:taskAllDayFlag
-    
-            },
-          ]);
+      fetch("http://localhost:4000/tasks", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      }).then((response) => {
+        if (response.status === 200) {
+          if (!taskStartHour) {
+            setCurrentTasks([
+              ...tasksWithoutChosenTask,
+              {
+                title: taskTitle,
+                start: taskStartDay,
+                end: taskEndDay,
+                _id: taskId,
+                allDay: taskAllDayFlag,
+              },
+            ]);
+          } else {
+            setCurrentTasks([
+              ...tasksWithoutChosenTask,
+              {
+                title: taskTitle,
+                start: taskStartDay + "T" + taskStartHour + "-03:00",
+                end: taskEndDay + "T" + taskEndHour + "-03:00",
+                _id: taskId,
+                allDay: taskAllDayFlag,
+              },
+            ]);
+          }
         }
-       }
-       setShowTaskModal(false);
-    })
-    
-    
-
+        setShowTaskModal(false);
+      });
+    } else {
+      alert("Data inválida. Digite uma data futura");
+    }
   };
 
   return (

@@ -46,7 +46,6 @@ const Tasks = ({ history }) => {
     e.preventDefault();
     setShowUpdateModal(true);
     setTaskToUpdateId(id);
-    console.log(tasks);
     const task = tasks.filter((task) => task._id === id)[0];
     if (!task.hourStart) {
       setTaskTitle(task.title);
@@ -64,36 +63,39 @@ const Tasks = ({ history }) => {
   };
   const handleTaskUpdate = async (e, id) => {
     e.preventDefault();
-    let requestBody;
-  
 
-   if(!taskStartHour){
-    requestBody = {
-      id: id,
-      title: taskTitle,
-      dayEnd: taskEndDay,
-      dayStart: taskStartDay,
-      hourEnd: taskEndHour,
-      hourStart: taskStartHour,
-      allDay:true
-    };
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    if (
+      Number(taskStartDay.split("-")[0]) >= year &&
+      Number(taskStartDay.split("-")[1]) >= day &&
+      Number(taskStartDay.split("-")[2]) >= month
+    ) {
+      let requestBody;
 
-   }else{
-    requestBody = {
-      id: id,
-      title: taskTitle,
-      dayEnd: taskEndDay,
-      dayStart: taskStartDay,
-      hourEnd: taskEndHour,
-      hourStart: taskStartHour,
-      allDay:false
-    };
-
-
-
-   }
- 
-      
+      if (!taskStartHour) {
+        requestBody = {
+          id: id,
+          title: taskTitle,
+          dayEnd: taskEndDay,
+          dayStart: taskStartDay,
+          hourEnd: taskEndHour,
+          hourStart: taskStartHour,
+          allDay: true,
+        };
+      } else {
+        requestBody = {
+          id: id,
+          title: taskTitle,
+          dayEnd: taskEndDay,
+          dayStart: taskStartDay,
+          hourEnd: taskEndHour,
+          hourStart: taskStartHour,
+          allDay: false,
+        };
+      }
 
       fetch("http://localhost:4000/tasks", {
         method: "PATCH",
@@ -101,7 +103,9 @@ const Tasks = ({ history }) => {
         body: JSON.stringify(requestBody),
       });
       setShowUpdateModal(false);
-    
+    } else {
+      alert("Data Inválida, digite uma data futura.");
+    }
   };
 
   return (
@@ -165,44 +169,41 @@ const Tasks = ({ history }) => {
               placeholder="Tarefa"
             />
 
-           
-              <div className="fields-without-time">
-                <label className="update-task-label">Data de inicio</label>
+            <div className="fields-without-time">
+              <label className="update-task-label">Data de inicio</label>
 
-                <input
-                  value={taskStartDay}
-                  onChange={(e) =>
-                    setTaskStartDay(
-                      mask(unMask(e.target.value), ["9999-99-99"])
-                    )
-                  }
-                  placeholder="Inicio"
-                />
-                <label className="update-task-label">Horário de Início</label>
-                <input
-                  value={taskStartHour}
-                  onChange={(e) =>
-                    setTaskStartHour(mask(unMask(e.target.value), ["99:99:99"]))
-                  }
-                  placeholder="Inicio"
-                />
-                <label className="update-task-label">Data de termino</label>
-                <input
-                  value={taskEndDay}
-                  onChange={(e) => {
-                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]));
-                  }}
-                  placeholder="Inicio"
-                />
-                <label className="update-task-label">Horário de Termino</label>
-                <input
-                  value={taskEndHour}
-                  onChange={(e) => {
-                    setTaskEndHour(mask(unMask(e.target.value), ["99:99:99"]));
-                  }}
-                  placeholder="Fim"
-                />
-              </div>
+              <input
+                value={taskStartDay}
+                onChange={(e) =>
+                  setTaskStartDay(mask(unMask(e.target.value), ["9999-99-99"]))
+                }
+                placeholder="Inicio"
+              />
+              <label className="update-task-label">Horário de Início</label>
+              <input
+                value={taskStartHour}
+                onChange={(e) =>
+                  setTaskStartHour(mask(unMask(e.target.value), ["99:99:99"]))
+                }
+                placeholder="Inicio"
+              />
+              <label className="update-task-label">Data de termino</label>
+              <input
+                value={taskEndDay}
+                onChange={(e) => {
+                  setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]));
+                }}
+                placeholder="Inicio"
+              />
+              <label className="update-task-label">Horário de Termino</label>
+              <input
+                value={taskEndHour}
+                onChange={(e) => {
+                  setTaskEndHour(mask(unMask(e.target.value), ["99:99:99"]));
+                }}
+                placeholder="Fim"
+              />
+            </div>
             <a
               className=" update-modal-button modal-button"
               onClick={(e) => {
