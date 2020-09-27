@@ -161,11 +161,13 @@ const Home = ({ history }) => {
     const chosenCalendarTask = currentTasks.filter((task) => {
       return task.title === taskTitle;
     })[0];
-    const tasksWithoutChosenTask = response.data.filter((task) => {
+    const tasksWithoutChosenTask = currentTasks.filter((task) => {
       return task._id !== taskId;
     });
+ console.log(tasksWithoutChosenTask);
 
-    if (chosenTask.allDay) {
+
+    if (!taskStartHour) {
       setCurrentTasks([
         ...tasksWithoutChosenTask,
         {
@@ -173,41 +175,27 @@ const Home = ({ history }) => {
           start: taskStartDay,
           end: taskEndDay,
           _id: taskId,
-          allDay:taskAllDayFlag
+          allDay:true
         },
       ]);
     } else {
       setCurrentTasks([
-        ...currentTasks,
+        ...tasksWithoutChosenTask,
         {
           title: taskTitle,
           start: taskStartDay + "T" + taskStartHour + "-03:00",
           end: taskEndDay + "T" + taskEndHour + "-03:00",
           _id: taskId,
-          allDay:taskAllDayFlag
+          allDay:false
 
         },
       ]);
     }
 
-    if (
-      Number(taskStartHour.split(":")[0]) >= 24 ||
-      Number(taskStartHour.split(":")[1]) >= 60 ||
-      Number(taskStartHour.split(":")[2]) >= 60
-    ) {
-      setIsTimeValid(false);
-      return alert("Horário informado é inválido");
-    } else if (
-      Number(taskStartDay.split("-")[0]) > 2020 ||
-      Number(taskStartDay.split("-")[2]) > 30
-    ) {
-      setIsTimeValid(false);
-      return alert("Data informada é inválida é inválido");
-    } else {
-      setIsTimeValid(true);
-    }
     let requestBody;
+  
 
+   if(!taskStartHour){
     requestBody = {
       id: taskId,
       title: taskTitle,
@@ -215,16 +203,29 @@ const Home = ({ history }) => {
       dayStart: taskStartDay,
       hourEnd: taskEndHour,
       hourStart: taskStartHour,
-      allDay:taskAllDayFlag
+      allDay:true
     };
+
+   }else{
+    requestBody = {
+      id: taskId,
+      title: taskTitle,
+      dayEnd: taskEndDay,
+      dayStart: taskStartDay,
+      hourEnd: taskEndHour,
+      hourStart: taskStartHour,
+      allDay:false
+    };
+
+
+
+   }
 
     fetch("http://localhost:4000/tasks", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
-    }).then((response) => {
-      console.log(response.data);
-    });
+    })
   };
 
   return (

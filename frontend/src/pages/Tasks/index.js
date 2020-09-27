@@ -65,20 +65,6 @@ const Tasks = ({ history }) => {
   const handleTaskUpdate = async (e, id) => {
     e.preventDefault();
     let requestBody;
-    if (
-      Number(taskStartHour.split(":")[0]) >= 24 ||
-      Number(taskStartHour.split(":")[1]) >= 60 ||
-      Number(taskStartHour.split(":")[2]) >= 60
-    ) {
-    return  alert("Horário informado é inválido");
-
-    } else if (
-      Number(taskStartDay.split("-")[0]) > 2020 ||
-      Number(taskStartDay.split("-")[2]) > 30
-    ) {
-     return alert("Data informada é inválida é inválido");
-    } else {
-    }
   
 
    if(!taskStartHour){
