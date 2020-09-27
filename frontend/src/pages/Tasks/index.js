@@ -26,7 +26,6 @@ const Tasks = ({ history }) => {
     lodTasks();
   }, [tasks]);
 
-
   const handleTaskDelete = (e, id) => {
     e.preventDefault();
     fetch("http://localhost:4000/tasks", {
@@ -109,7 +108,7 @@ const Tasks = ({ history }) => {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
-      })
+      });
       setShowUpdateModal(false);
     }
   };
@@ -176,7 +175,7 @@ const Tasks = ({ history }) => {
             />
             {!hasTime ? (
               <div className="fields-without-time">
-                                <label className="update-task-label">Data de termino</label>
+                <label className="update-task-label">Data de termino</label>
 
                 <input
                   value={taskStartDay}
@@ -187,7 +186,7 @@ const Tasks = ({ history }) => {
                   }
                   placeholder="Inicio"
                 />
-                                                <label className="update-task-label">Data de Término</label>
+                <label className="update-task-label">Data de Término</label>
 
                 <input
                   value={taskEndDay}
@@ -202,7 +201,7 @@ const Tasks = ({ history }) => {
             )}
             {hasTime ? (
               <div className="fields-without-time">
-              <label className="update-task-label">Data de inicio</label>
+                <label className="update-task-label">Data de inicio</label>
 
                 <input
                   value={taskStartDay}
@@ -229,7 +228,7 @@ const Tasks = ({ history }) => {
                   }}
                   placeholder="Inicio"
                 />
-              <label className="update-task-label">Horário de Termino</label>
+                <label className="update-task-label">Horário de Termino</label>
                 <input
                   value={taskEndHour}
                   onChange={(e) => {

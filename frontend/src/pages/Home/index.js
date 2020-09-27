@@ -153,7 +153,16 @@ const handleEventClick = (clickInfo) => {
   return (
     <div className="home-container container">
       <Header history={history}></Header>
+      <div className="aside-warning aside-warning-left">
+        <div className="aside-warning-content aside-warning-content-left">
+        <h1 className="welcome-message">Seja Bem Vindo(a)<br/>Usuário</h1>
+      <span className="add-task-warning warning-message">Clique em uma data no calendário para adicionar um evento</span>
+      </div>
+
+      </div>
+
       <div className="home-content">
+
       <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
@@ -173,6 +182,13 @@ const handleEventClick = (clickInfo) => {
           />
 
       </div>
+      <div className="aside-warning aside-warning-right">
+        <div className="aside-warning-content aside-warning-content-right">
+      <span className="add-task-warning warning-message">Clique em um evento para que possa deleta-lo, ou remove-lo</span>
+      </div>
+
+      </div>
+
     </div>
   );
 };

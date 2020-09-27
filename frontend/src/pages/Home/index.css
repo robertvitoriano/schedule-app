@@ -10,14 +10,56 @@
     padding:40px;
     border-radius: 15px;
     box-shadow:  2px 2px 2px;
-    height:700px;
-    width:800px; 
+    height:600px;
+    width:700px; 
+    position: relative;
     
 }
 
 
+.aside-warning{
+    width: 300px;
+    height: 500px;
+    position: absolute;
+    z-index: 4;
+    background-color: aliceblue;
+    border-radius: 15px;
+    box-shadow:  2px 2px 2px;
+    border:solid rgb(26, 25, 25) 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
 
+}
+.aside-warning-right{
+    right:1vw;
+}
+.aside-warning-left{
+    left:1vw;
+
+}
+.warning-message{
+    font-size:26px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    width:100%; 
+    position: relative;
+    
+}
+.welcome-message{
+    text-align: center;
+}
+.aside-warning-content{
+    height:250px;
+    position: absolute;
+    top: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 15px;
+}
 .add-task-button{
 
     border-radius: 15px;
@@ -43,4 +85,23 @@
     right:10px;
     font-size: 20px;
     cursor: pointer;
+}
+
+@media (max-width: 1370px) {
+    .home-content{
+        margin-top:50px;
+        background-color: aliceblue;
+        padding:0;
+        border-radius: 15px;
+        box-shadow:  2px 2px 2px;
+        height:550px; 
+        padding: 20px;
+      
+        
+    }
+    
+    .fc-view-harness{
+        width:600px;
+    }
+
 }
