@@ -53,7 +53,6 @@ const Home = ({ history }) => {
     loadTasks();
   }, []);
   const handleDateSelect = async (selectInfo) => {
-    // console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
     let title = prompt("Digite o título da nova tarefa");
     let calendarApi = selectInfo.view.calendar;
 
@@ -110,7 +109,6 @@ const Home = ({ history }) => {
       const formatedHourEnd = chosenTask.end
         .split("T")[1]
         .replace("-03:00", "");
-        console.log(formatedHourEnd)
       const formatedDayStart = chosenTask.start.split("T")[0];
       const formatedDayEnd = chosenTask.end.split("T")[0];
       setTaskTitle(chosenTask.title);
@@ -163,12 +161,6 @@ const Home = ({ history }) => {
               return task._id !== taskId;
     });
 
-    console.log(tasksWithoutChosenTask);
-    console.log(chosenCalendarTask);
-    console.log(chosenTask.allDay);
-  
-
-
     if (chosenTask.allDay) {
       setCurrentTasks([...tasksWithoutChosenTask,{
         title: taskTitle,
@@ -191,31 +183,26 @@ const Home = ({ history }) => {
       Number(taskStartHour.split(":")[2]) >= 60
     ) {
       setIsTimeValid(false);
-      alert("Horário informado é inválido");
-      setTaskEndHour("");
-      setTaskStartHour("");
+      return alert("Horário informado é inválido");
     } else if (
       Number(taskStartDay.split("-")[0]) > 2020 ||
       Number(taskStartDay.split("-")[2]) > 30
     ) {
       setIsTimeValid(false);
-      alert("Data informada é inválida é inválido");
-      setTaskEndDay("");
-      setTaskStartDay("");
+     return alert("Data informada é inválida é inválido");
     } else {
       setIsTimeValid(true);
     }
     let requestBody;
   
-    if (isTimeValid) {
-      if (!hasTime) {
+      
         requestBody = {
           id: taskId,
           title: taskTitle,
           dayEnd: taskEndDay,
           dayStart: taskStartDay,
         };
-      } else {
+      
         requestBody = {
           id: taskId,
           title: taskTitle,
@@ -224,14 +211,16 @@ const Home = ({ history }) => {
           hourEnd: taskEndHour,
           hourStart: taskStartHour,
         };
-      }
+      
 
       fetch("http://localhost:4000/tasks", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
+      }).then((response)=>{
+        console.log(response.data);
       });
-    }
+    
   };
 
   return (

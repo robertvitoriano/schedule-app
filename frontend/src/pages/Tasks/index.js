@@ -46,6 +46,7 @@ const Tasks = ({ history }) => {
     e.preventDefault();
     setShowUpdateModal(true);
     setTaskToUpdateId(id);
+    console.log(tasks);
     const task = tasks.filter((task) => task._id === id)[0];
     if (!task.hourStart) {
       setTaskTitle(task.title);
@@ -69,40 +70,44 @@ const Tasks = ({ history }) => {
       Number(taskStartHour.split(":")[1]) >= 60 ||
       Number(taskStartHour.split(":")[2]) >= 60
     ) {
-      setIsTimeValid(false);
-      alert("Horário informado é inválido");
-      setTaskEndHour("");
-      setTaskStartHour("");
+    return  alert("Horário informado é inválido");
+
     } else if (
       Number(taskStartDay.split("-")[0]) > 2020 ||
       Number(taskStartDay.split("-")[2]) > 30
     ) {
-      setIsTimeValid(false);
-      alert("Data informada é inválida é inválido");
-      setTaskEndDay("");
-      setTaskStartDay("");
+     return alert("Data informada é inválida é inválido");
     } else {
-      setIsTimeValid(true);
     }
+  
 
-    if (isTimeValid) {
-      if (!hasTime) {
-        requestBody = {
-          id: id,
-          title: taskTitle,
-          dayEnd: taskEndDay,
-          dayStart: taskStartDay,
-        };
-      } else {
-        requestBody = {
-          id: id,
-          title: taskTitle,
-          dayEnd: taskEndDay,
-          dayStart: taskStartDay,
-          hourEnd: taskEndHour,
-          hourStart: taskStartHour,
-        };
-      }
+   if(!taskStartHour){
+    requestBody = {
+      id: id,
+      title: taskTitle,
+      dayEnd: taskEndDay,
+      dayStart: taskStartDay,
+      hourEnd: taskEndHour,
+      hourStart: taskStartHour,
+      allDay:true
+    };
+
+   }else{
+    requestBody = {
+      id: id,
+      title: taskTitle,
+      dayEnd: taskEndDay,
+      dayStart: taskStartDay,
+      hourEnd: taskEndHour,
+      hourStart: taskStartHour,
+      allDay:false
+    };
+
+
+
+   }
+ 
+      
 
       fetch("http://localhost:4000/tasks", {
         method: "PATCH",
@@ -110,7 +115,7 @@ const Tasks = ({ history }) => {
         body: JSON.stringify(requestBody),
       });
       setShowUpdateModal(false);
-    }
+    
   };
 
   return (
