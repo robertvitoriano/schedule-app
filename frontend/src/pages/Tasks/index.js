@@ -23,7 +23,7 @@ const Tasks = ({ history }) => {
       setTasks(response.data);
     };
     lodTasks();
-  }, [tasks]);
+  }, []);
 
   console.log(tasks);
 
@@ -175,16 +175,7 @@ const Tasks = ({ history }) => {
                   placeholder="Inicio"
                 />
                 <input
-                  value={taskStartDay}
-                  onChange={(e) =>
-                    setTaskStartDay(
-                      mask(unMask(e.target.value), ["9999-99-99"])
-                    )
-                  }
-                  placeholder="Inicio"
-                />
-                <input
-                  value={taskStartDay}
+                  value={taskStartHour}
                   onChange={(e) =>
                     setTaskStartDay(
                       mask(unMask(e.target.value), ["9999-99-99"])
@@ -194,6 +185,15 @@ const Tasks = ({ history }) => {
                 />
                 <input
                   value={taskEndDay}
+                  onChange={(e) =>
+                    setTaskStartDay(
+                      mask(unMask(e.target.value), ["9999-99-99"])
+                    )
+                  }
+                  placeholder="Inicio"
+                />
+                <input
+                  value={taskEndHour}
                   onChange={(e) =>
                     setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))
                   }
