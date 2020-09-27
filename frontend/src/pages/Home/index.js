@@ -92,6 +92,7 @@ console.log(currentTasks);
 
 
        }  
+       document.location.reload();
 
     }
 
@@ -134,7 +135,6 @@ const handleEventClick = (clickInfo) => {
     }
     })
   }
-  document.location.reload();
 
 }
 
