@@ -27,9 +27,14 @@ const Home = ({ history }) => {
   const [isTimeValid, setIsTimeValid] = useState(false);
   const currentTasksRef = useRef([]);
 
+  const token = localStorage.getItem('token');
   useEffect(() => {
     const loadTasks = async () => {
-      const response = await api.get("/tasks");
+      const response = await api.get("/tasks/list",{
+        headers:{
+          authorization:'Bearer '+token 
+        }
+      });
       response.data.map((task) => {
         if (task.allDay) {
           currentTasksRef.current.push({
@@ -77,20 +82,28 @@ const Home = ({ history }) => {
         const formatedDayStart = selectInfo.startStr.split("T")[0];
         const formatedDayEnd = selectInfo.endStr.split("T")[0];
 
-        await api.post("/tasks", {
+        await api.post("/tasks/create", {
           title: title,
           dayStart: formatedDayStart,
           dayEnd: formatedDayEnd,
           hourStart: formatedHourStart,
           hourEnd: formatedHourEnd,
           allDay: selectInfo.allDay,
+        },{
+          headers:{
+            authorization:'Bearer '+token 
+          }
         });
       } else {
-        await api.post("/tasks", {
+        await api.post("/tasks/create",{
           title: title,
           dayStart: selectInfo.startStr,
           dayEnd: selectInfo.endStr,
           allDay: selectInfo.allDay,
+        },{
+          headers:{
+            authorization:'Bearer '+token 
+          }
         });
       }
       document.location.reload();
@@ -133,9 +146,9 @@ const Home = ({ history }) => {
     setShowTaskModal(true);
   };
   const handleDelete = () => {
-    fetch("http://localhost:4000/tasks", {
+    fetch("http://localhost:4000/tasks/delete", {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",'Authorization': 'Bearer '+token },
       body: JSON.stringify({ id: taskId }),
     }).then((response) => {
       if (response.status === 200) {
@@ -151,11 +164,6 @@ const Home = ({ history }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const response = await api.get("/tasks");
-    const tasks = response.data;
-    const chosenTask = tasks.filter((task) => {
-      return task._id === taskId;
-    })[0];
     const tasksWithoutChosenTask = currentTasks.filter((task) => {
       return task._id !== taskId;
     });
@@ -217,9 +225,9 @@ const Home = ({ history }) => {
         };
       }
 
-      fetch("http://localhost:4000/tasks", {
+      fetch("http://localhost:4000/tasks/update", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",'Authorization': 'Bearer '+token },
         body: JSON.stringify(requestBody),
       }).then((response) => {
         if (response.status === 200) {

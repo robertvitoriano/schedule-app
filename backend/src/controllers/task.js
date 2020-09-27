@@ -3,17 +3,19 @@ const Task = require('../models/Task');
 
 module.exports = {
     async list(req,res){
-        const tasks = await Task.find();
+        const {user} = req;
+        const tasks = await Task.find({author:user._id});
         return res.send(tasks);
 
     },
     async create(req,res){
-        const task = await Task.create(req.body);
+        const user =req.user;
+        const{title,dayStart,dayEnd,hourStart,hourEnd,allDay} = req.body;
+        const task = await Task.create({title,dayStart,dayEnd,hourStart,hourEnd,allDay,author:user._id});
         task.save();
         return res.send(task);
     },
     async delete(req,res){
-        console.log(req.body.id)
 
         if(req.body.id){
             try{
@@ -29,9 +31,7 @@ module.exports = {
         }
     },
     async update(req,res){
-        console.log(req.body.id);
         if(req.body.id){
-            //title, start, end, allDay,_id
             try{
                 await Task.findByIdAndUpdate( {_id: req.body.id },
                 { title: req.body.title,

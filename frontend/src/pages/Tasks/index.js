@@ -17,10 +17,14 @@ const Tasks = ({ history }) => {
   const [isTimeValid, setIsTimeValid] = useState(false);
 
   const [taskToUpdateId, setTaskToUpdateId] = useState("");
-
+ const token = localStorage.getItem('token');
   useEffect(() => {
     const lodTasks = async () => {
-      const response = await api.get("/tasks");
+      const response = await api.get("/tasks/list",{
+        headers:{
+          authorization:'Bearer '+token 
+        }
+      });
       setTasks(response.data);
     };
     lodTasks();
@@ -28,9 +32,9 @@ const Tasks = ({ history }) => {
 
   const handleTaskDelete = (e, id) => {
     e.preventDefault();
-    fetch("http://localhost:4000/tasks", {
+    fetch("http://localhost:4000/tasks/delete", {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",'Authorization': 'Bearer '+token },
       body: JSON.stringify({ id }),
     }).then((response) => {
       if (response.status === 200) {
@@ -122,9 +126,9 @@ const Tasks = ({ history }) => {
         };
       }
 
-      fetch("http://localhost:4000/tasks", {
+      fetch("http://localhost:4000/tasks/update", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",'Authorization': 'Bearer '+token },
         body: JSON.stringify(requestBody),
       });
       setShowUpdateModal(false);
