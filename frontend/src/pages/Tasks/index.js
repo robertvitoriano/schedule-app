@@ -14,6 +14,7 @@ const Tasks = ({ history }) => {
   const [taskStartHour, setTaskStartHour] = useState("");
   const [taskEndHour, setTaskEndHour] = useState("");
   const [hasTime, setHasTime] = useState(false);
+  const [isTimeValid, setIsTimeValid] = useState(false);
 
   const [taskToUpdateId, setTaskToUpdateId] = useState("");
 
@@ -23,9 +24,8 @@ const Tasks = ({ history }) => {
       setTasks(response.data);
     };
     lodTasks();
-  }, []);
+  }, [tasks]);
 
-  console.log(tasks);
 
   const handleTaskDelete = (e, id) => {
     e.preventDefault();
@@ -48,39 +48,70 @@ const Tasks = ({ history }) => {
     setShowUpdateModal(true);
     setTaskToUpdateId(id);
     const task = tasks.filter((task) => task._id === id)[0];
-    if(task.allDay){
+    if (!task.hourStart) {
       setTaskTitle(task.title);
       setTaskEndDay(task.dayEnd);
       setTaskStartDay(task.dayStart);
       setHasTime(false);
-
-
-    }else{
-      setHasTime(true);
+    } else {
       setTaskTitle(task.title);
       setTaskEndDay(task.dayEnd);
       setTaskStartDay(task.dayStart);
       setTaskStartHour(task.hourStart);
       setTaskEndHour(task.hourEnd);
+      setHasTime(true);
     }
-
-
   };
   const handleTaskUpdate = async (e, id) => {
     e.preventDefault();
-    console.log(id);
-    const requestBody = {
-      id: id,
-      title: taskTitle,
-      dayEnd: taskStartDay,
-      dayStart: taskEndDay,
-    };
-    fetch("http://localhost:4000/tasks", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestBody),
-    });
-    setShowUpdateModal(false);
+    let requestBody;
+    if (
+      Number(taskStartHour.split(":")[0]) >= 24 ||
+      Number(taskStartHour.split(":")[1]) >= 60 ||
+      Number(taskStartHour.split(":")[2]) >= 60
+    ) {
+      setIsTimeValid(false);
+      alert("Horário informado é inválido");
+      setTaskEndHour("");
+      setTaskStartHour("");
+    } else if (
+      Number(taskStartDay.split("-")[0]) > 2020 ||
+      Number(taskStartDay.split("-")[2]) > 30
+    ) {
+      setIsTimeValid(false);
+      alert("Data informada é inválida é inválido");
+      setTaskEndDay("");
+      setTaskStartDay("");
+    } else {
+      setIsTimeValid(true);
+    }
+
+    if (isTimeValid) {
+      if (!hasTime) {
+        requestBody = {
+          id: id,
+          title: taskTitle,
+          dayEnd: taskEndDay,
+          dayStart: taskStartDay,
+        };
+      } else {
+        requestBody = {
+          id: id,
+          title: taskTitle,
+          dayEnd: taskEndDay,
+          dayStart: taskStartDay,
+          hourEnd: taskEndHour,
+          hourStart: taskStartHour,
+        };
+      }
+
+      fetch("http://localhost:4000/tasks", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      })
+      setShowUpdateModal(false);
+    }
   };
 
   return (
@@ -136,6 +167,8 @@ const Tasks = ({ history }) => {
               X
             </a>
             <span className="modal-title">Alterar Tarefa</span>
+            <label className="update-task-label">tarefa</label>
+
             <textarea
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
@@ -143,6 +176,8 @@ const Tasks = ({ history }) => {
             />
             {!hasTime ? (
               <div className="fields-without-time">
+                                <label className="update-task-label">Data de termino</label>
+
                 <input
                   value={taskStartDay}
                   onChange={(e) =>
@@ -152,6 +187,8 @@ const Tasks = ({ history }) => {
                   }
                   placeholder="Inicio"
                 />
+                                                <label className="update-task-label">Data de Término</label>
+
                 <input
                   value={taskEndDay}
                   onChange={(e) =>
@@ -165,6 +202,8 @@ const Tasks = ({ history }) => {
             )}
             {hasTime ? (
               <div className="fields-without-time">
+              <label className="update-task-label">Data de inicio</label>
+
                 <input
                   value={taskStartDay}
                   onChange={(e) =>
@@ -174,29 +213,28 @@ const Tasks = ({ history }) => {
                   }
                   placeholder="Inicio"
                 />
+                <label className="update-task-label">Horário de Início</label>
                 <input
                   value={taskStartHour}
                   onChange={(e) =>
-                    setTaskStartDay(
-                      mask(unMask(e.target.value), ["9999-99-99"])
-                    )
+                    setTaskStartHour(mask(unMask(e.target.value), ["99:99:99"]))
                   }
                   placeholder="Inicio"
                 />
+                <label className="update-task-label">Data de termino</label>
                 <input
                   value={taskEndDay}
-                  onChange={(e) =>
-                    setTaskStartDay(
-                      mask(unMask(e.target.value), ["9999-99-99"])
-                    )
-                  }
+                  onChange={(e) => {
+                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]));
+                  }}
                   placeholder="Inicio"
                 />
+              <label className="update-task-label">Horário de Termino</label>
                 <input
                   value={taskEndHour}
-                  onChange={(e) =>
-                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))
-                  }
+                  onChange={(e) => {
+                    setTaskEndHour(mask(unMask(e.target.value), ["99:99:99"]));
+                  }}
                   placeholder="Fim"
                 />
               </div>

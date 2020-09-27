@@ -29,15 +29,18 @@ module.exports = {
         }
     },
     async update(req,res){
+        console.log(req.body.id)
         if(req.body.id){
             //title, start, end, allDay,_id
             try{
                 await Task.findByIdAndUpdate( {_id: req.body.id },
                 { title: req.body.title,
-                  start:req.body.start,
-                  end:req.body.end,
+                  dayStart:req.body.dayStart,
+                  dayEnd:req.body.dayEnd,
+                  hourStart:req.body.hourStart,
+                  hourEnd:req.body.hourEnd,
                   allDay:req.body.allDay
-             });
+                 });
                 const task = await Task.findById(req.body.id);
                 return res.send(task)
     
