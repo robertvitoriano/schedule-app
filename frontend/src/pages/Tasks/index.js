@@ -25,6 +25,8 @@ const Tasks = ({ history }) => {
     lodTasks();
   }, [tasks]);
 
+  console.log(tasks);
+
   const handleTaskDelete = (e, id) => {
     e.preventDefault();
     fetch("http://localhost:4000/tasks", {
@@ -42,15 +44,27 @@ const Tasks = ({ history }) => {
   };
 
   const handleUpdateModal = async (e, id) => {
-    console.log(id);
     e.preventDefault();
     setShowUpdateModal(true);
     setTaskToUpdateId(id);
     const task = tasks.filter((task) => task._id === id)[0];
+    if(task.allDay){
+      setTaskTitle(task.title);
+      setTaskEndDay(task.dayEnd);
+      setTaskStartDay(task.dayStart);
+      setHasTime(false);
 
-    setTaskTitle(task.title);
-    setTaskEndDay(task.end);
-    setTaskStartDay(task.start);
+
+    }else{
+      setHasTime(true);
+      setTaskTitle(task.title);
+      setTaskEndDay(task.dayEnd);
+      setTaskStartDay(task.dayStart);
+      setTaskStartHour(task.hourStart);
+      setTaskEndHour(task.hourEnd);
+    }
+
+
   };
   const handleTaskUpdate = async (e, id) => {
     e.preventDefault();
@@ -58,8 +72,8 @@ const Tasks = ({ history }) => {
     const requestBody = {
       id: id,
       title: taskTitle,
-      start: taskStartDay,
-      end: taskEndDay,
+      dayEnd: taskStartDay,
+      dayStart: taskEndDay,
     };
     fetch("http://localhost:4000/tasks", {
       method: "PATCH",
@@ -85,10 +99,10 @@ const Tasks = ({ history }) => {
                       {task.title}
                     </div>
                     <div className="task-field task-field-start">
-                      {task.start.split("T")[0]}
+                      {task.dayStart}
                     </div>
                     <div className="task-field task-field-end">
-                      {task.end.split("T")[0]}
+                      {task.dayEnd}
                     </div>
                   </div>
 
@@ -130,7 +144,7 @@ const Tasks = ({ history }) => {
             {!hasTime ? (
               <div className="fields-without-time">
                 <input
-                  value={taskStartDay.split('T')[0]}
+                  value={taskStartDay}
                   onChange={(e) =>
                     setTaskStartDay(
                       mask(unMask(e.target.value), ["9999-99-99"])
@@ -139,7 +153,7 @@ const Tasks = ({ history }) => {
                   placeholder="Inicio"
                 />
                 <input
-                  value={taskEndDay.split('T')[0]}
+                  value={taskEndDay}
                   onChange={(e) =>
                     setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))
                   }

@@ -30,14 +30,27 @@ useEffect(()=>{
    const  response = await api.get('/tasks');
    console.log(response.data);
    response.data.map((task)=>{
-     currentTasksRef.current.push({
-      title:task.title,
-      start: task.dayStart,
-      end: task.dayEnd,
-      allDay: task.allDay,
-      _id:task._id 
-    
-    })
+     if(task.allDay){
+      currentTasksRef.current.push({
+        title:task.title,
+        start: task.dayStart,
+        end: task.dayEnd,
+        allDay: task.allDay,
+        _id:task._id 
+      })
+
+     }else{
+      currentTasksRef.current.push({
+        title:task.title,
+        start: task.dayStart+'T'+task.hourStart+'-03:00',
+        end: task.dayEnd+'T'+task.hourEnd+'-03:00',
+        allDay: task.allDay,
+        _id:task._id 
+      })
+
+      
+     }
+
     
  })
  setCurrentTasks(currentTasksRef.current)
@@ -47,10 +60,7 @@ useEffect(()=>{
 
 
 },[])
-
 console.log(currentTasks);
-
-
   const handleDateSelect = async (selectInfo) => {
     // console.log("Essas são as informações Start "+selectInfo.startStr+" End: "+ selectInfo.endStr+" All Day "+selectInfo.allDay)
     let title = prompt('Digite o título da nova tarefa')
@@ -67,6 +77,7 @@ console.log(currentTasks);
         end: selectInfo.endStr,
         allDay: selectInfo.allDay
       })
+
        if(selectInfo.startStr.includes('T')){
          const formatedHourStart = selectInfo.startStr.split('T')[1].replace('-03:00','');
          const formatedHourEnd =selectInfo.endStr.split('T')[1].replace('-03:00','');
@@ -93,6 +104,7 @@ console.log(currentTasks);
 
        }  
        document.location.reload();
+
 
     }
 
