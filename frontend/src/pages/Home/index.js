@@ -162,12 +162,14 @@ const Home = ({ history }) => {
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
-    const day = today.getDate();
 
     if (
       Number(taskStartDay.split("-")[0]) >= year &&
-      Number(taskStartDay.split("-")[1]) >= day &&
-      Number(taskStartDay.split("-")[2]) >= month
+      Number(taskStartDay.split("-")[2]) <= 30 &&Number(taskStartDay.split("-")[2]) >=1 &&
+      Number(taskStartDay.split("-")[1]) >= month &
+      Number(taskEndDay.split("-")[0]) >= year &&
+      Number(taskEndDay.split("-")[2]) <= 30 &&Number(taskEndDay.split("-")[2]) >=1 &&
+      Number(taskEndDay.split("-")[1]) >= month
     ) {
       let requestBody;
 
@@ -226,7 +228,7 @@ const Home = ({ history }) => {
         setShowTaskModal(false);
       });
     } else {
-      alert("Data inválida. Digite uma data futura");
+      alert("Data inválida. Digite uma data válida");
     }
   };
 

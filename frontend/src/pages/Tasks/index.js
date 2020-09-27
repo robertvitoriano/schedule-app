@@ -70,8 +70,11 @@ const Tasks = ({ history }) => {
     const day = today.getDate();
     if (
       Number(taskStartDay.split("-")[0]) >= year &&
-      Number(taskStartDay.split("-")[1]) >= day &&
-      Number(taskStartDay.split("-")[2]) >= month
+      Number(taskStartDay.split("-")[2]) <= 30 &&Number(taskStartDay.split("-")[2]) >=1 &&
+      Number(taskStartDay.split("-")[1]) >= month &
+      Number(taskEndDay.split("-")[0]) >= year &&
+      Number(taskEndDay.split("-")[2]) <= 30 &&Number(taskEndDay.split("-")[2]) >=1 &&
+      Number(taskEndDay.split("-")[1]) >= month
     ) {
       let requestBody;
 
@@ -104,7 +107,7 @@ const Tasks = ({ history }) => {
       });
       setShowUpdateModal(false);
     } else {
-      alert("Data Inválida, digite uma data futura.");
+      alert("Data Inválida, digite uma data válida.");
     }
   };
 
