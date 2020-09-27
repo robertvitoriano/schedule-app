@@ -68,8 +68,9 @@ const Tasks = ({ history }) => {
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
     const day = today.getDate();
-      if (
-        !(Number(taskStartDay.split("-")[0]) >= year &&
+    if (
+      !(
+        Number(taskStartDay.split("-")[0]) >= year &&
         Number(taskStartDay.split("-")[2]) <= 30 &&
         Number(taskStartDay.split("-")[2]) >= 1 &&
         (Number(taskStartDay.split("-")[1]) >= 1) &
@@ -78,45 +79,55 @@ const Tasks = ({ history }) => {
         Number(taskEndDay.split("-")[2]) <= 30 &&
         Number(taskEndDay.split("-")[2]) >= 1 &&
         Number(taskEndDay.split("-")[1]) >= 1 &&
-        Number(taskEndDay.split("-")[1]) <= 12)
-      ) {
-        alert("Data Inválida, digite uma data válida.");
+        Number(taskEndDay.split("-")[1]) <= 12
+      )
+    ) {
+      alert("Data Inválida, digite uma data válida.");
+    } else if (
+      taskStartHour.split(":")[0] >= 0 &&
+      taskStartHour.split(":")[1] >= 0 &&
+      taskStartHour.split(":")[1] <= 59 &&
+      taskStartHour.split(":")[2] >= 0 &&
+      taskStartHour.split(":")[2] <= 59 &&
+      taskEndHour.split(":")[1] >= 0 &&
+      taskEndHour.split(":")[1] <= 59 &&
+      taskEndHour.split(":")[2] >= 0 &&
+      taskEndHour.split(":")[2] <= 59
+    ) {
+      alert("Horário inválido, digite um horário válido.");
 
+    } else {
+      let requestBody;
 
+      if (!taskStartHour) {
+        requestBody = {
+          id: id,
+          title: taskTitle,
+          dayEnd: taskEndDay,
+          dayStart: taskStartDay,
+          hourEnd: taskEndHour,
+          hourStart: taskStartHour,
+          allDay: true,
+        };
+      } else {
+        requestBody = {
+          id: id,
+          title: taskTitle,
+          dayEnd: taskEndDay,
+          dayStart: taskStartDay,
+          hourEnd: taskEndHour,
+          hourStart: taskStartHour,
+          allDay: false,
+        };
       }
-    else {
-        let requestBody;
-  
-        if (!taskStartHour) {
-          requestBody = {
-            id: id,
-            title: taskTitle,
-            dayEnd: taskEndDay,
-            dayStart: taskStartDay,
-            hourEnd: taskEndHour,
-            hourStart: taskStartHour,
-            allDay: true,
-          };
-        } else {
-          requestBody = {
-            id: id,
-            title: taskTitle,
-            dayEnd: taskEndDay,
-            dayStart: taskStartDay,
-            hourEnd: taskEndHour,
-            hourStart: taskStartHour,
-            allDay: false,
-          };
-        }
-  
-        fetch("http://localhost:4000/tasks", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(requestBody),
-        });
-        setShowUpdateModal(false);
-      } 
-    
+
+      fetch("http://localhost:4000/tasks", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+      setShowUpdateModal(false);
+    }
   };
 
   return (
