@@ -44,6 +44,7 @@ module.exports = {
                 const task = await Task.findById(req.body.id);
                 return res.send(task)
             }catch(e){
+                
                 console.log(e)
                 return res.send(e);
             }
