@@ -173,33 +173,8 @@ const Tasks = ({ history }) => {
               onChange={(e) => setTaskTitle(e.target.value)}
               placeholder="Tarefa"
             />
-            {!hasTime ? (
-              <div className="fields-without-time">
-                <label className="update-task-label">Data de termino</label>
 
-                <input
-                  value={taskStartDay}
-                  onChange={(e) =>
-                    setTaskStartDay(
-                      mask(unMask(e.target.value), ["9999-99-99"])
-                    )
-                  }
-                  placeholder="Inicio"
-                />
-                <label className="update-task-label">Data de Término</label>
-
-                <input
-                  value={taskEndDay}
-                  onChange={(e) =>
-                    setTaskEndDay(mask(unMask(e.target.value), ["9999-99-99"]))
-                  }
-                  placeholder="Fim"
-                />
-              </div>
-            ) : (
-              ""
-            )}
-            {hasTime ? (
+           
               <div className="fields-without-time">
                 <label className="update-task-label">Data de inicio</label>
 
@@ -237,9 +212,6 @@ const Tasks = ({ history }) => {
                   placeholder="Fim"
                 />
               </div>
-            ) : (
-              ""
-            )}
             <a
               className=" update-modal-button modal-button"
               onClick={(e) => {
