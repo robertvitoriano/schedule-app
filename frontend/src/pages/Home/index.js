@@ -301,7 +301,7 @@ const Home = ({ history }) => {
       <div className="aside-warning aside-warning-right">
         <div className="aside-warning-content aside-warning-content-right">
           <span className="add-task-warning warning-message">
-            Clique em um evento para que possa deleta-lo ou remove-lo
+            Clique em um evento para que possa deleta-lo ou alterá-lo
           </span>
         </div>
       </div>

@@ -59,3 +59,31 @@ form{
     }
 
 }
+
+
+@media (max-width: 1200px) {
+    .register-button{
+        margin-top: 10px;
+    }
+    .register-logo{
+        width:250px;
+        margin-bottom: 40px;
+    }
+    .register-field{
+        display: block;
+        text-align: center;
+        width: 100vw;
+        height: 80px;
+        border:solid grey 3px;
+        border-radius: 15px;
+        outline: none;
+        font-size: 30px;
+        margin-bottom: 12px;
+    
+    
+    
+    
+    }
+    
+
+}

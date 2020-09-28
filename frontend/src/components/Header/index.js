@@ -8,7 +8,7 @@ const Header = ({history}) => {
       <div className="navigation">
           <ul className="navigation-items">
               <li className="navigation-item"><Link to="/home" >Home</Link></li>
-              <li className="navigation-item"><Link to="/tasks">Gerenciar Tarefas</Link></li>
+              <li className="navigation-item navigation-item-manage-tasks"><Link to="/tasks">Gerenciar Tarefas</Link></li>
               <li className="navigation-item"><Link to="/" onClick={e=>localStorage.setItem('token','')}>Logout</Link></li>
 
           </ul>

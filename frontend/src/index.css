@@ -40,6 +40,7 @@ form{width: fit-content;}
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-radius: 15px;
 
 
 
@@ -123,4 +124,39 @@ form{width: fit-content;}
   font-weight: bold;
   color: black;
 font-family: Arial, Helvetica, sans-serif;
+}
+
+
+@media (max-width: 1200px) {
+
+.container{
+  background-color: grey;
+}
+
+.update-task-modal{
+  background-color: aliceblue;
+  box-shadow:  2px 2px 2px black;
+  width: 600px;
+  height:300px;
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.translucent{
+  width: 100vw;
+  height:100vh;
+  background-color: white;
+  position: absolute;
+  opacity: 0;
+  z-index: 4;
+
+}
+
+
+
 }
