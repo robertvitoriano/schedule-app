@@ -1,21 +1,38 @@
 import React from "react";
-import './index.css'
-import logo from './../../assets/logo-agx-software.png';
-import { Link } from 'react-router-dom';
-const Header = ({history}) => {
-  return <div className="header">
-      <img src={logo} className='header-logo' onClick={e=>history.push('/home')}></img>    
+import "./index.css";
+import logo from "./../../assets/logo-agx-software.png";
+import { Link } from "react-router-dom";
+const Header = ({ history }) => {
+  return (
+    <div className="header">
+      <img
+        src={logo}
+        className="header-logo"
+        onClick={(e) => history.push("/home")}
+      ></img>
       <div className="navigation">
-          <ul className="navigation-items">
-              <li className="navigation-item"><Link to="/home" >Home</Link></li>
-              <li className="navigation-item navigation-item-manage-tasks"><Link to="/tasks">Gerenciar Tarefas</Link></li>
-              <li className="navigation-item"><Link to="/" onClick={e=>localStorage.setItem('token','')}>Logout</Link></li>
-
-          </ul>
-
+        <ul className="navigation-items">
+          <li className="navigation-item">
+            <Link to="/home">Home</Link>
+          </li>
+          <li className="navigation-item navigation-item-manage-tasks">
+            <Link to="/tasks">Gerenciar Tarefas</Link>
+          </li>
+          <li className="navigation-item">
+            <Link
+              to="/"
+              onClick={(e) => {
+                localStorage.setItem("token", "");
+                localStorage.setItem("name", "");
+              }}
+            >
+              Logout
+            </Link>
+          </li>
+        </ul>
       </div>
-  </div>;
+    </div>
+  );
 };
 
 export default Header;
-
