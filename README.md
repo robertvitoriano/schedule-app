@@ -41,10 +41,8 @@ Para executar esse projeto você deve ter instalados em sua máquina os seguinte
  - yarn
 
 
-Primeiramente você deve executar o comando #`yarn` com o terminal posicionado na pasta referente ao backend e depois no frontend.
+Primeiramente você deve executar o comando `yarn` com o terminal posicionado na pasta referente ao backend e depois no frontend.
 
-Após isso, certifique-se que o mongodb esteja corretamente instalado na maquina e que o comando mongod esteja adicionado à variável de ambiente 'path' ou que o mongodb
-esteja instalado como um serviço. Após essa verificação. execute
 
 ### ` yarn dev` na pasta referente ao backend
 
@@ -60,33 +58,38 @@ Feito isso, a aplicação poderá ser visualizada no browser com o endereço :
  ### Login
 <img src="read-me-assets/login.png"/>
 
-
+ ### modal
+<img src="read-me-assets/modal.png"/>
 
  ### Calendário
 <img src="read-me-assets/home.png"/>
 
 
+
  ### Gerenciador de tarefas
-<img src="read-me-assets/gerenciar_tarefas.jpg"/>
+<img src="read-me-assets/gerenciar_tarefas.ong"/>
 
 
 
 
  ### Mobile
 
-  ### Cadastro
-<img src="read-me-assets/register-mobile.jpg"/>
+  ### login
+<img src="read-me-assets/login-responsivo.png"/>
 
- ### Erro
-<img src="read-me-assets/register-mobile-error.jpg"/>
+
 
 
  ### Listagem de informações
-<img src="read-me-assets/home-mobile.jpg"/>
+<img src="read-me-assets/calendario-reponsivo.png"/>
+
+ ### modal
+<img src="read-me-assets/modal-reponsivo.png"/>
 
 
- ### sem informações restantes
-<img src="read-me-assets/home-mobile-end.jpg"/>
+ ### Gerenciador de tarefas
+<img src="read-me-assets/gerenciar_tarefas_responsivo.png"/>
+
 
 
 Fontes:
